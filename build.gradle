@@ -1,0 +1,54 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+
+    apply from: "config.gradle"
+    ext.kotlin_version = '1.6.10'
+
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://maven.aliyun.com/nexus/content/repositories/jcenter" }
+        maven { url "https://jitpack.io" }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            credentials {
+                username '605c5a273fd856bdf3101c9a'
+                password 'DHcYsFK[4zv-'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2253054-release-dyTPUK/'
+        }
+        maven {
+            credentials {
+                username '605c5a273fd856bdf3101c9a'
+                password 'DHcYsFK[4zv-'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2253054-snapshot-tANEth/'
+        }
+    }
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

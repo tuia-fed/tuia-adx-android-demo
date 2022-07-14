@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
+
+    <Button
+        android:id="@+id/btnReward"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="激励视频广告"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btnFullScreen"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="全屏视频广告"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btnSplash"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="开屏广告"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btnTabScreen"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="插屏弹窗广告"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btnBanner"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="BANNER广告"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btnIcon"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="ICON广告"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <Button
+        android:id="@+id/btnCustom"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="自渲染类型广告"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+</android.support.v7.widget.LinearLayoutCompat>

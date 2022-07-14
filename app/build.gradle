@@ -1,0 +1,74 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+
+    signingConfigs {
+        tuia {
+            keyAlias 'kAlias-TUIA-312214'
+            keyPassword 'kPwd-TUIA-756658'
+            storeFile file('./funNewsKey.jks')
+            storePassword 'store-TUIA-201103'
+        }
+    }
+
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.dt.adx"
+        minSdk 21
+        targetSdk 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86','x86_64', 'arm64-v8a', 'armeabi'
+        }
+
+        packagingOptions {
+            doNotStrip "*/armeabi-v7a/*.so"
+            doNotStrip "*/x86/*.so"
+            doNotStrip "*/arm64-v8a/*.so"
+            doNotStrip "armeabi.so"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            zipAlignEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.tuia
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs/jni']
+        }
+    }
+
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    api files('libs/oaid_sdk_1.0.25.aar')
+    api files('libs/sdk-release.aar')
+    api rootProject.ext.dependencies["support-v4"]
+    api rootProject.ext.dependencies["appcompat-v7"]
+    api rootProject.ext.dependencies["recyclerview-v7"]
+    api rootProject.ext.dependencies["gson"]
+    api rootProject.ext.dependencies["okhttp"]
+    api rootProject.ext.dependencies["okdownload"]
+    api rootProject.ext.dependencies["constraintLayout"]
+}
