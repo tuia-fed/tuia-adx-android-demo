@@ -1,2 +1,2 @@
-# tuia-adx-android-demo-
+# tuia-adx-android-demo
 竞价广告demo
