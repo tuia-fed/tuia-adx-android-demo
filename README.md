@@ -38,16 +38,6 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
   dependencies {
         //必须 
         implementation 'com.tuia.android:adx:3.3.0.0'
-        //必须
-        implementation 'com.liulishuo.okdownload:okdownload:1.0.5'
-        //必须
-        implementation 'com.google.code.gson:gson:2.8.5'
-        //必须
-        implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-        //必须
-        implementation 'com.android.support:support-v4:28.0.0'
-        //必须
-        implementation 'com.android.support:appcompat-v7:28.0.0'
    }
 ```
 
