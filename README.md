@@ -301,7 +301,7 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
         super.onDestroy();
     }
 ```
-1.插屏弹窗类型广告
+3.插屏弹窗类型广告
 ```
    //获取广告对象
    tabScreenVideoHolder = FoxNativeAdHelper.getADXTabScreenVideoHolder();
@@ -387,7 +387,7 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
     }
 ```
 
-1.开屏类型广告
+4.开屏类型广告
 ```
    //获取广告对像
    adxSplashHolder = FoxNativeAdHelper.getADXSplashHolder();
@@ -483,7 +483,7 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
    
 ```
 
-1.Banner/横幅类型广告
+5.Banner/横幅类型广告
 ```
     //获取广告对象
     adxBannerHolder = FoxNativeAdHelper.getADXBannerHolder();
@@ -576,7 +576,7 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
 
 ```
 
-1.Icon/浮标类型广告
+6.Icon/浮标类型广告
 ```
    //获取广告对象
    adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
@@ -667,7 +667,7 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
     }
 ```
 
-1.媒体自渲染信息流类型广告
+7.媒体自渲染信息流类型广告
 ```
 //获取广告对象
    mOxCustomerTm = new FoxADXCustomerTm(this);
@@ -720,7 +720,7 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
     }
 ```
 
-1.自定义类型广告
+8.自定义类型广告
 ```
    //获取广告对象
    mOxCustomerTm = new FoxADXCustomerTm(this);

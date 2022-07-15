@@ -24,6 +24,7 @@ public class CustomActivity extends AppCompatActivity implements FoxADXCustomerH
     private String userId;
     private int slotId;
     private Bid mBid;
+    private int mPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class CustomActivity extends AppCompatActivity implements FoxADXCustomerH
         textView.setOnClickListener(v -> {
             if (mOxCustomerTm != null && mBid != null
                     && !TextUtils.isEmpty(mBid.getDurl())) {
-                mOxCustomerTm.adClicked(100);
+                mOxCustomerTm.adClicked(mPrice);
                 mOxCustomerTm.openFoxActivity(mBid.getDurl());
             }
         });
@@ -100,7 +101,7 @@ public class CustomActivity extends AppCompatActivity implements FoxADXCustomerH
     public void onAdGetSuccess(Bid bid, BidAdm bidAdm) {
         FoxBaseToastUtils.showShort("onAdGetSuccess");
         mBid = bid;
-        mOxCustomerTm.adExposed(100);
+        mOxCustomerTm.adExposed(mPrice);
         if (textView!=null){
             textView.setText(mBid.toString());
         }

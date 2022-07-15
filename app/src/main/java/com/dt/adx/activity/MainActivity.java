@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnReward:
                 intent.setClass(this,RewardVideoActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421090);
+                intent.putExtra("slotId",89967);
                 break;
             case R.id.btnFullScreen:
                 intent.setClass(this,FullScreenVideoActivity.class);

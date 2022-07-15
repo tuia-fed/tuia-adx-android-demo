@@ -63,12 +63,6 @@ android {
 
 dependencies {
     api files('libs/oaid_sdk_1.0.25.aar')
-    api files('libs/sdk-release.aar')
-    api rootProject.ext.dependencies["support-v4"]
-    api rootProject.ext.dependencies["appcompat-v7"]
-    api rootProject.ext.dependencies["recyclerview-v7"]
-    api rootProject.ext.dependencies["gson"]
-    api rootProject.ext.dependencies["okhttp"]
-    api rootProject.ext.dependencies["okdownload"]
+    api 'com.tuia.android:adx:3.0.0.1'
     api rootProject.ext.dependencies["constraintLayout"]
 }
