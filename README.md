@@ -14,26 +14,22 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        allprojects {
-            repositories {
-                maven {
-                    url 'https://maven.aliyun.com/repository/public'
-                }
-                maven {
-                    credentials {
-                        username '62d0db35dbd131f866667a62'
-                        password 'F4jv7KzjMyWB'
-                    }
-                    url 'https://packages.aliyun.com/maven/repository/2253698-release-0SXAnL/'
-                }
-                maven {
-                    credentials {
-                        username '62d0db35dbd131f866667a62'
-                        password 'F4jv7KzjMyWB'
-                    }
-                    url 'https://packages.aliyun.com/maven/repository/2253698-snapshot-WwZwlE/'
-                }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            credentials {
+                username '62d11e53cf51ade33b4ae2b6'
+                password 'XoIn0VA8L3sF'
             }
+            url 'https://packages.aliyun.com/maven/repository/2253698-release-0SXAnL/'
+        }
+        maven {
+            credentials {
+                username '62d11e53cf51ade33b4ae2b6'
+                password 'XoIn0VA8L3sF'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2253698-snapshot-WwZwlE/'
         }
     }
 
