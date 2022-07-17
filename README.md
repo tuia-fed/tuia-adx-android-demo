@@ -4,6 +4,7 @@
 ---|---|---
 V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价 
 
+
 # 1.接入准备
 
 接入广告SDK前，请您联系广告平台申请您的AppId，Appkey，AppSecret，slotId等，可联系相关运营协助。
@@ -43,7 +44,6 @@ V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价
         //必须 
         implementation 'com.tuia.android:adx:3.3.0.0'
    }
-
 ```
 
 ## 2.2 添加权限
@@ -852,7 +852,58 @@ protected void onDestroy() {
 }
 ```
 
-# 5.FAQ
+# 5.回调接口说明
+
+## 广告相关回调接口说明
+
+```text
+//广告加载失败
+void onAdLoadFailed();
+
+//广告加载成功
+void onAdLoadSuccess();
+
+//广告点击
+void onAdClick();
+
+//广告曝光
+void onAdExposure();
+
+//倒计时结束
+void onAdTimeOut();
+
+//点击跳过广告
+void onAdJumpClick();
+
+//奖励发放 true 代表完成视频任务有奖励 false 无
+void onAdReward(boolean isReward);
+
+//广告关闭按钮点击
+void onAdCloseClick();
+
+//活动页关闭
+void onAdActivityClose(String data);
+
+//活动页面信息回传 保留 暂无使用
+void onAdMessage(MessageData data)
+
+
+```
+
+## 视频相关回调接口说明
+
+```text
+//视频播放器加载成功
+void onPrepared();
+//播放结束
+void onCompletion();
+//出错 有一定容错处理暂不需要特殊处理
+boolean onError(int what, int extra);
+//尺寸变化
+void onVideoSizeChanged(int width, int height);
+```
+
+# 6.FAQ
 
 
 
