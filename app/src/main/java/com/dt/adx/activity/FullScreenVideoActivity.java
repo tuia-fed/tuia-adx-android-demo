@@ -114,7 +114,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     private FoxADXADBean mFoxADXADBean;
     private void getAd() {
         nativeIVideoHolder = FoxNativeAdHelper.getADXFullScreenHolder();
-        nativeIVideoHolder.loadAd(slotId, userId, true, new FoxADXFullScreenVideoHolder.LoadAdListener() {
+        nativeIVideoHolder.loadAd(slotId, userId, new FoxADXFullScreenVideoHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXFullScreenVideoAd foxADXFullScreenVideoAd) {
                 FoxBaseToastUtils.showShort(FoxSDK.getContext(), "onAdGetSuccess");

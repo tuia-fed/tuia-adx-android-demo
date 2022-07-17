@@ -342,7 +342,7 @@ protected void onDestroy() {
 nativeIVideoHolder = FoxNativeAdHelper.getADXFullScreenHolder();
 
 //请求广告，在缓存成功onAdCacheSuccess回调后加载广告
-nativeIVideoHolder.loadAd(slotId, userId, true, new FoxADXFullScreenVideoHolder.LoadAdListener() {
+nativeIVideoHolder.loadAd(slotId, userId, new FoxADXFullScreenVideoHolder.LoadAdListener() {
     @Override
     public void onAdGetSuccess(FoxADXFullScreenVideoAd foxADXFullScreenVideoAd) {
         if (foxADXFullScreenVideoAd != null) {
