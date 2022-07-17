@@ -60,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (foxADXSplashAd != null) {
                     foxADXSplashAd.setScaleType(ImageView.ScaleType.FIT_XY);
                     foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
-                    FoxBaseToastUtils.showShort("onAdGetSuccess price="+foxADXSplashAd.getPrice());
+//                    FoxBaseToastUtils.showShort("onAdGetSuccess price="+foxADXSplashAd.getPrice());
                 }
             }
 

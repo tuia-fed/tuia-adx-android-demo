@@ -1,5 +1,6 @@
 package com.dt.adx.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.FoxSDK;
+import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoAd;
 import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoHolder;
@@ -32,19 +34,17 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     private String userId;
     private String mUrl;
     private int price = 100;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_full_screen_video);
         if (getIntent() != null) {
             userId = getIntent().getStringExtra("userId");
             slotId = getIntent().getIntExtra("slotId", 0);
         }
+        mActivity =this;
         findViewById(R.id.btnRequest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,152 +52,110 @@ public class FullScreenVideoActivity extends AppCompatActivity {
             }
         });
         findViewById(R.id.btnShow).setOnClickListener(v -> {
-            if (videoView != null ) {
-                contentView = findViewById(android.R.id.content);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                contentView.addView(videoView, params);
-                videoView.showAd(FullScreenVideoActivity.this, null,price);
-                videoView.setVideoListener(new FoxVideoListener() {
+            if (mFoxADXADBean != null && adxFullScreenVideoAd!=null) {
+                adxFullScreenVideoAd.setLoadVideoAdInteractionListener(new FoxADXFullScreenVideoAd.LoadVideoAdInteractionListener() {
                     @Override
-                    public void onPrepared() {
-                        Log.d(TAG, "onPrepared: ");
+                    public void onAdLoadFailed() {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdLoadFailed");
                     }
 
                     @Override
-                    public void onCompletion() {
-                        Log.d(TAG, "onCompletion: ");
+                    public void onAdLoadSuccess() {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdLoadSuccess");
                     }
 
                     @Override
-                    public boolean onError(int what, int extra) {
-                        Log.d(TAG, "onError: "+what+"-"+extra);
-                        return false;
+                    public void onAdClick() {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdClick");
                     }
 
                     @Override
-                    public boolean onInfo(int what, int extra) {
-                        Log.d(TAG, "onInfo: "+what+"-"+extra);
-                        return false;
+                    public void onAdExposure() {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdExposure");
                     }
 
                     @Override
-                    public void onSeekComplete() {
-                        Log.d(TAG, "onSeekComplete: ");
+                    public void onAdTimeOut() {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdTimeOut");
                     }
 
                     @Override
-                    public void onVideoSizeChanged(int width, int height) {
-                        Log.d(TAG, "onVideoSizeChanged: width="+width+"-height="+height);
+                    public void onAdJumpClick() {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdJumpClick");
+                    }
+
+                    @Override
+                    public void onAdCloseClick() {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdCloseClick");
+                    }
+
+                    @Override
+                    public void onAdActivityClose(String data) {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdActivityClose");
+                    }
+
+                    @Override
+                    public void onAdMessage(MessageData data) {
+                        FoxBaseToastUtils.showShort(mActivity,"onAdMessage");
                     }
                 });
+                //设置竞价胜出价格
+                mFoxADXADBean.setPrice(price);
+                //打开全屏视频广告
+                adxFullScreenVideoAd.openActivity(mFoxADXADBean);
             }else {
                 FoxBaseToastUtils.showShort("等待缓存成功再播放");
             }
         });
     }
 
-    private FoxADXFullScreenVideoView videoView;
-    private ViewGroup contentView;
+
+    private FoxADXFullScreenVideoAd adxFullScreenVideoAd;
+    private FoxADXADBean mFoxADXADBean;
     private void getAd() {
         nativeIVideoHolder = FoxNativeAdHelper.getADXFullScreenHolder();
-        nativeIVideoHolder.loadAd(slotId, userId, new FoxADXFullScreenVideoHolder.LoadAdListener() {
+        nativeIVideoHolder.loadAd(slotId, userId, true, new FoxADXFullScreenVideoHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXFullScreenVideoAd foxADXFullScreenVideoAd) {
-                if (foxADXFullScreenVideoAd!=null && foxADXFullScreenVideoAd.getView() instanceof FoxADXFullScreenVideoView){
-                    videoView = (FoxADXFullScreenVideoView) foxADXFullScreenVideoAd.getView();
-                    FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdGetSuccess price="
-                            +foxADXFullScreenVideoAd.getPrice());
+                FoxBaseToastUtils.showShort(FoxSDK.getContext(), "onAdGetSuccess");
+                if (foxADXFullScreenVideoAd != null) {
+                    adxFullScreenVideoAd = foxADXFullScreenVideoAd;
                 }
             }
 
             @Override
-            public void onAdTimeOut() {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdTimeOut");
+            public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                FoxBaseToastUtils.showShort(mActivity, "onAdCacheSuccess");
+                mFoxADXADBean = foxADXADBean;
             }
 
             @Override
-            public void onAdCacheSuccess(String id) {
-                Log.d(TAG, "onAdVideoCacheSuccess: onAdVideoCacheSuccess");
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdVideoCacheSuccess");
+            public void onAdCacheCancel(FoxADXADBean foxADXADBean) {
+                FoxBaseToastUtils.showShort(mActivity, "onAdCacheCancel");
             }
 
             @Override
-            public void onAdCacheCancel(String id) {
-
+            public void onAdCacheFail(FoxADXADBean foxADXADBean) {
+                FoxBaseToastUtils.showShort(mActivity, "onAdCacheFail");
             }
 
             @Override
-            public void onAdCacheFail(String id) {
-
-            }
-
-            @Override
-            public void onAdCacheEnd(String id) {
-
-            }
-
-            @Override
-            public void onAdJumpClick() {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdJumpClick");
+            public void onAdCacheEnd(FoxADXADBean foxADXADBean) {
+                FoxBaseToastUtils.showShort(mActivity, "onAdCacheEnd");
             }
 
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"servingSuccessResponse");
+                FoxBaseToastUtils.showShort(mActivity, "servingSuccessResponse");
             }
 
             @Override
             public void onError(int errorCode, String errorBody) {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onError"+errorCode+errorBody);
-            }
-
-            @Override
-            public void onAdLoadFailed() {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdLoadFailed");
-            }
-
-            @Override
-            public void onAdLoadSuccess() {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdLoadSuccess");
-            }
-
-            @Override
-            public void onAdCloseClick() {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdCloseClick");
-                jumpMain();
-            }
-
-            @Override
-            public void onAdClick() {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdClick");
-            }
-
-            @Override
-            public void onAdExposure() {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdExposure");
-            }
-
-            @Override
-            public void onAdActivityClose(String data) {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdActivityClose");
-            }
-
-            @Override
-            public void onAdMessage(MessageData data) {
-                FoxBaseToastUtils.showShort(FoxSDK.getContext(),"onAdMessage");
+                FoxBaseToastUtils.showShort(mActivity, "onError" + errorCode + errorBody);
             }
         });
     }
 
-    /**
-     * 跳转主页
-     */
-    private void jumpMain() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
 
     @Override
     protected void onDestroy() {

@@ -44,7 +44,7 @@ public class IconActivity extends AppCompatActivity {
         findViewById(R.id.btnRequest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80, 80, 80, 1, new FoxADXIconHolder.LoadAdListener() {
+                adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
                     @Override
                     public void servingSuccessResponse(BidResponse bidResponse) {
                         Log.d(TAG, "servingSuccessResponse: ");
