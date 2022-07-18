@@ -1,2 +1,6 @@
-#对接指南
-https://tuia.yuque.com/docs/share/5b7c9662-c3ca-479e-9809-d3101e546e53?# 《Android-SDK对接指南》
+| SDK版本     | 修订日期     | 修订说明   | 
+| -------- | -------- | ------------- | 
+| V3.0.0.0 | 20220715 | 广告SDK支持ADX竞价  |
+
+# 对接指南
+https://tuia.yuque.com/docs/share/5b7c9662-c3ca-479e-9809-d3101e546e53
