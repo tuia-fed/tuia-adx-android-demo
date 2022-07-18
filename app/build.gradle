@@ -63,6 +63,6 @@ android {
 
 dependencies {
     api files('libs/oaid_sdk_1.0.25.aar')
-    api 'com.tuia.android:adx:3.3.0.1'
+    api 'com.tuia.android:adx:3.3.0.2'
     api rootProject.ext.dependencies["constraintLayout"]
 }

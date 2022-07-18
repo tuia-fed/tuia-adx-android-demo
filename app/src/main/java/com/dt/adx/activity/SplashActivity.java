@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -59,25 +60,27 @@ public class SplashActivity extends AppCompatActivity {
         adxSplashHolder.loadAd(slotId, userId, new FoxADXSplashHolder.LoadAdListener() {
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
-
+                Log.d(TAG, "servingSuccessResponse: ");
             }
 
             @Override
             public void onError(int code, String msg) {
+                Log.d(TAG, "onError: "+code+msg);
             }
 
             @Override
             public void onAdGetSuccess(FoxADXSplashAd foxADXSplashAd) {
                 if (foxADXSplashAd!=null){
+                    Log.d(TAG, "onAdGetSuccess: "+ foxADXSplashAd.getECPM());
                     foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
                     //获取竞价价格
                     foxADXSplashAd.getECPM();
                 }
-
             }
 
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                Log.d(TAG, "onAdCacheSuccess: "+foxADXADBean.getRequestTid());
                 mFoxADXADBean = foxADXADBean;
                 if (mFoxADXADBean!=null){
                     ViewGroup contentView = findViewById(android.R.id.content);
@@ -90,52 +93,55 @@ public class SplashActivity extends AppCompatActivity {
                     foxADXShView.setAdListener(new FoxADXSplashAd.LoadAdInteractionListener() {
                         @Override
                         public void onAdLoadFailed() {
-
+                            Log.d(TAG, "onAdLoadFailed: ");
                         }
 
                         @Override
                         public void onAdLoadSuccess() {
-
+                            Log.d(TAG, "onAdLoadSuccess: ");
                         }
 
                         @Override
                         public void onAdClick() {
-
+                            Log.d(TAG, "onAdClick: ");
                         }
 
                         @Override
                         public void onAdExposure() {
-
+                            Log.d(TAG, "onAdExposure: ");
                         }
 
                         @Override
                         public void onAdTimeOut() {
+                            Log.d(TAG, "onAdTimeOut: ");
                                jumpMain();
                         }
 
                         @Override
                         public void onAdJumpClick() {
+                            Log.d(TAG, "onAdJumpClick: ");
                             jumpMain();
                         }
 
                         @Override
                         public void onAdActivityClose(String s) {
+                            Log.d(TAG, "onAdActivityClose: ");
                             jumpMain();
                         }
 
                         @Override
                         public void onAdMessage(MessageData messageData) {
-
+                            Log.d(TAG, "onAdMessage: ");
                         }
 
                         @Override
                         public void servingSuccessResponse(BidResponse bidResponse) {
-
+                            Log.d(TAG, "servingSuccessResponse: ");
                         }
 
                         @Override
                         public void onError(int i, String s) {
-
+                            Log.d(TAG, "onError: ");
                         }
                     });
                     foxADXShView.showAd(SplashActivity.this,mFoxADXADBean);
