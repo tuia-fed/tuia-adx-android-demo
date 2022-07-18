@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.splash.FoxADXShView;
 import com.mediamain.android.adx.view.splash.FoxADXSplashAd;
@@ -33,6 +34,8 @@ public class SplashActivity extends AppCompatActivity {
     private String userId;
     private FoxADXShView foxADXShView;
     private int price =100;
+    private FoxADXSplashAd mFoxADXSplashAd;
+    private FoxADXADBean mFoxADXADBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,113 +53,120 @@ public class SplashActivity extends AppCompatActivity {
                 getAd();
             }
         });
-        registerReceiver(receiver, new IntentFilter("broadsend.action"));
     }
 
     private void getAd() {
-        adxSplashHolder.loadAd(421090, userId, new FoxADXSplashHolder.LoadAdListener() {
-            @Override
-            public void onAdGetSuccess(FoxADXSplashAd foxADXSplashAd) {
-                if (foxADXSplashAd != null) {
-                    foxADXSplashAd.setScaleType(ImageView.ScaleType.FIT_XY);
-                    foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
-//                    FoxBaseToastUtils.showShort("onAdGetSuccess price="+foxADXSplashAd.getPrice());
-                }
-            }
-
-            @Override
-            public void onAdTimeOut() {
-                FoxBaseToastUtils.showShort("onAdTimeOut ");
-                jumpMain();
-            }
-
-            @Override
-            public void onAdCacheSuccess(String id) {
-                FoxBaseToastUtils.showShort("onAdCacheSuccess ");
-                ViewGroup contentView = findViewById(android.R.id.content);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                contentView.addView(foxADXShView, params);
-                foxADXShView.showAd(SplashActivity.this,null,price);
-            }
-
-            @Override
-            public void onAdCacheCancel(String id) {
-
-            }
-
-            @Override
-            public void onAdCacheFail(String id) {
-                  jumpMain();
-            }
-
-            @Override
-            public void onAdCacheEnd(String id) {
-
-            }
-
-            @Override
-            public void onAdJumpClick() {
-                FoxBaseToastUtils.showShort("onAdJumpClick ");
-                jumpMain();
-            }
-
+        adxSplashHolder.loadAd(slotId, userId, new FoxADXSplashHolder.LoadAdListener() {
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
-                FoxBaseToastUtils.showShort("servingSuccessResponse ");
-            }
-
-            @Override
-            public void onError(int errorCode, String errorBody) {
-                FoxBaseToastUtils.showShort("onError "+errorCode+errorBody);
-            }
-
-            @Override
-            public void onAdLoadFailed() {
-                FoxBaseToastUtils.showShort("onAdLoadFailed ");
-            }
-
-            @Override
-            public void onAdLoadSuccess() {
-                FoxBaseToastUtils.showShort("onAdLoadSuccess ");
-            }
-
-            @Override
-            public void onAdCloseClick() {
-                FoxBaseToastUtils.showShort("onAdCloseClick ");
 
             }
 
             @Override
-            public void onAdClick() {
-                FoxBaseToastUtils.showShort("onAdClick ");
+            public void onError(int code, String msg) {
+            }
+
+            @Override
+            public void onAdGetSuccess(FoxADXSplashAd foxADXSplashAd) {
+                if (foxADXSplashAd!=null){
+                    foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
+                    //获取竞价价格
+                    foxADXSplashAd.getECPM();
+                }
 
             }
 
             @Override
-            public void onAdExposure() {
-                FoxBaseToastUtils.showShort("onAdExposure ");
+            public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                mFoxADXADBean = foxADXADBean;
+                if (mFoxADXADBean!=null){
+                    ViewGroup contentView = findViewById(android.R.id.content);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    contentView.removeAllViews();
+                    contentView.addView(foxADXShView, params);
+                    mFoxADXADBean.setPrice(price);
+                    foxADXShView.setAdListener(new FoxADXSplashAd.LoadAdInteractionListener() {
+                        @Override
+                        public void onAdLoadFailed() {
+
+                        }
+
+                        @Override
+                        public void onAdLoadSuccess() {
+
+                        }
+
+                        @Override
+                        public void onAdClick() {
+
+                        }
+
+                        @Override
+                        public void onAdExposure() {
+
+                        }
+
+                        @Override
+                        public void onAdTimeOut() {
+                               jumpMain();
+                        }
+
+                        @Override
+                        public void onAdJumpClick() {
+                            jumpMain();
+                        }
+
+                        @Override
+                        public void onAdActivityClose(String s) {
+                            jumpMain();
+                        }
+
+                        @Override
+                        public void onAdMessage(MessageData messageData) {
+
+                        }
+
+                        @Override
+                        public void servingSuccessResponse(BidResponse bidResponse) {
+
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+
+                        }
+                    });
+                    foxADXShView.showAd(SplashActivity.this,mFoxADXADBean);
+                }
+                FoxBaseToastUtils.showShort("onAdCacheSuccess ");
             }
 
             @Override
-            public void onAdActivityClose(String data) {
-                FoxBaseToastUtils.showShort("onAdActivityClose ");
-                jumpMain();
+            public void onAdCacheCancel(FoxADXADBean foxADXADBean) {
+
             }
 
             @Override
-            public void onAdMessage(MessageData data) {
-                FoxBaseToastUtils.showShort("onAdMessage ");
+            public void onAdCacheFail(FoxADXADBean foxADXADBean) {
+
+            }
+
+            @Override
+            public void onAdCacheEnd(FoxADXADBean foxADXADBean) {
+
             }
         });
     }
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(receiver);
         if (adxSplashHolder != null) {
             adxSplashHolder.destroy();
+        }
+        if (foxADXShView!=null){
+            foxADXShView.destroy();
         }
         super.onDestroy();
     }
@@ -168,18 +178,4 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
-
-    final BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (adxSplashHolder != null) {
-                int tag = intent.getIntExtra("Tag", 0);
-                if (tag == 0) {
-                    return;
-                }
-                FoxBaseToastUtils.showShort(context, "回传的type:" + tag);
-                adxSplashHolder.sendMessage(tag, "");
-            }
-        }
-    };
 }

@@ -1,11 +1,12 @@
 | 文档版本     | 修订日期     | 修订说明          | SDK版本    |
 | -------- | -------- | ------------- | -------- |
 | V1.0.0.0 | 20220715 | 广告SDK支持ADX竞价  | V3.3.0.0 |
-| V1.0.0.1 | 20220717 | 增加用户隐私信息获取说明  |          |
+| V1.0.0.1 | 20220718 | 增加用户隐私信息获取说明  | V3.3.0.0 |
+| V1.0.0.1 | 20220718 | 增加竞价说明  | V3.3.0.1 |
 
 
 
-# 1.接入准备																		
+# 1.接入准备
 
 接入广告SDK前，请您联系广告平台申请您的AppId，Appkey，AppSecret，slotId等，可联系相关运营协助。
 
@@ -85,18 +86,18 @@ SDK要求最低系统版本为API 21 ，对于适配了Android6.0以上(API >= 2
 | ACCESS_COARSE_UPDATES                                                         | 获取安装列表需要权限                                                        | 无法获取安装信息，严重影响内容推荐效果，造成核心消费指标下降                                        | 内容展示及播放视频时需要                                    | 是                                       |
 | REQUEST_INSTALL_PACKAGES                                                      | 安装权限                                                              | 无法安装下载类型广告应用，严重影响内容传话效果，造成核心消费指标下降                                    | 下载类广告必须权限                                       | 是                                       |
 
-															
 
-## 2.3 关于混淆																	
 
-### 请确保您的应用打包混淆时，请在混淆配置文件添加如下配置(重要):											
+## 2.3 关于混淆
+
+### 请确保您的应用打包混淆时，请在混淆配置文件添加如下配置(重要):
 
 ```text
 -dontwarn com.mediamain.android.**
 -keep class com.mediamain.android.**{ *;}
 ```
 
-### 如果您的应用启用了资源混淆或资源缩减，您需要保留SDK的资源，SDK的资源名都是以fox_开头的。您可以在资源混淆配置文件添加如下配置:																													
+### 如果您的应用启用了资源混淆或资源缩减，您需要保留SDK的资源，SDK的资源名都是以fox_开头的。您可以在资源混淆配置文件添加如下配置:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>					
@@ -216,7 +217,7 @@ public abstract class FoxCustomController {
 
 # 4.加载广告
 
-## 4.1 激励视频(参考RewardVideoActivity)
+## 4.1 激励视频(代码示例:RewardVideoActivity)
 
 ```java
 //获取广告对象
@@ -333,16 +334,14 @@ protected void onDestroy() {
 
 ```
 
-## 4.2 全屏视频
-
-
+## 4.2 全屏视频(代码示例:FullScreenVideoActivity)
 
 ```java
  //获取广告对象
 nativeIVideoHolder = FoxNativeAdHelper.getADXFullScreenHolder();
 
 //请求广告，在缓存成功onAdCacheSuccess回调后加载广告
-nativeIVideoHolder.loadAd(slotId, userId, new FoxADXFullScreenVideoHolder.LoadAdListener() {
+nativeIVideoHolder.loadAd(slotId, userId, true, new FoxADXFullScreenVideoHolder.LoadAdListener() {
     @Override
     public void onAdGetSuccess(FoxADXFullScreenVideoAd foxADXFullScreenVideoAd) {
         if (foxADXFullScreenVideoAd != null) {
@@ -449,259 +448,246 @@ protected void onDestroy() {
 
 ```
 
-## 4.3 开屏
+## 4.3 开屏(代码示例:SplashActivity)
 
 ```java
 //获取广告对像
 adxSplashHolder = FoxNativeAdHelper.getADXSplashHolder();
 //请求广告
 adxSplashHolder.loadAd(slotId, userId, new FoxADXSplashHolder.LoadAdListener() {
-         @Override
-         public void onAdGetSuccess(FoxADXSplashAd foxADXSplashAd) {
-             if (foxADXSplashAd != null) {
-                 foxADXSplashAd.setScaleType(ImageView.ScaleType.FIT_XY);
-                 foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
-             }
-         }
+            @Override
+            public void servingSuccessResponse(BidResponse bidResponse) {
 
-         @Override
-         public void onAdTimeOut() {
-         }
+            }
 
-         @Override
-         public void onAdCacheSuccess(String id) {
-             ViewGroup contentView = findViewById(android.R.id.content);
-             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                     ViewGroup.LayoutParams.MATCH_PARENT,
-                     ViewGroup.LayoutParams.MATCH_PARENT);
-             contentView.addView(foxADXShView, params);
-             foxADXShView.showAd(SplashActivity.this,null,price);
-         }
+            @Override
+            public void onError(int code, String msg) {
+            }
 
-         @Override
-         public void onAdCacheCancel(String id) {
+            @Override
+            public void onAdGetSuccess(FoxADXSplashAd foxADXSplashAd) {
+                if (foxADXSplashAd!=null){
+                    foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
+                    //获取竞价价格
+                    foxADXSplashAd.getECPM();
+                }
 
-         }
+            }
 
-         @Override
-         public void onAdCacheFail(String id) {
-         }
+            @Override
+            public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                mFoxADXADBean = foxADXADBean;
+                if (mFoxADXADBean!=null){
+                    ViewGroup contentView = findViewById(android.R.id.content);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    contentView.removeAllViews();
+                    contentView.addView(foxADXShView, params);
+                    mFoxADXADBean.setPrice(price);
+                    foxADXShView.setAdListener(new FoxADXSplashAd.LoadAdInteractionListener() {
+                        @Override
+                        public void onAdLoadFailed() {
 
-         @Override
-         public void onAdCacheEnd(String id) {
+                        }
 
-         }
+                        @Override
+                        public void onAdLoadSuccess() {
 
-         @Override
-         public void onAdJumpClick() {
-         }
+                        }
 
-         @Override
-         public void servingSuccessResponse(BidResponse bidResponse) {
-         }
+                        @Override
+                        public void onAdClick() {
 
-         @Override
-         public void onError(int errorCode, String errorBody) {
-         }
+                        }
 
-         @Override
-         public void onAdLoadFailed() {
-         }
+                        @Override
+                        public void onAdExposure() {
 
-         @Override
-         public void onAdLoadSuccess() {
-         }
+                        }
 
-         @Override
-         public void onAdCloseClick() {
+                        @Override
+                        public void onAdTimeOut() {
+                               jumpMain();
+                        }
 
-         }
+                        @Override
+                        public void onAdJumpClick() {
+                            jumpMain();
+                        }
 
-         @Override
-         public void onAdClick() {
+                        @Override
+                        public void onAdActivityClose(String s) {
+                            jumpMain();
+                        }
 
-         }
+                        @Override
+                        public void onAdMessage(MessageData messageData) {
 
-         @Override
-         public void onAdExposure() {
-         }
+                        }
 
-         @Override
-         public void onAdActivityClose(String data) {
-         }
+                        @Override
+                        public void servingSuccessResponse(BidResponse bidResponse) {
 
-         @Override
-         public void onAdMessage(MessageData data) {
-         }
-     });
-     
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+
+                        }
+                    });
+                    foxADXShView.showAd(SplashActivity.this,mFoxADXADBean);
+                }
+                FoxBaseToastUtils.showShort("onAdCacheSuccess ");
+            }
+
+            @Override
+            public void onAdCacheCancel(FoxADXADBean foxADXADBean) {
+
+            }
+
+            @Override
+            public void onAdCacheFail(FoxADXADBean foxADXADBean) {
+
+            }
+
+            @Override
+            public void onAdCacheEnd(FoxADXADBean foxADXADBean) {
+
+            }
+
+
 //注销广告组件避免内存泄漏
  @Override
- protected void onDestroy() {
-     if (nativeIVideoHolder != null) {
-         nativeIVideoHolder.destroy();
-     }
-     super.onDestroy();
- }
+protected void onDestroy() {
+   if (adxSplashHolder != null) {
+       adxSplashHolder.destroy();
+   }
+   if (foxADXShView!=null){
+       foxADXShView.destroy();
+   }
+   super.onDestroy();
+}
+
 ```
 
-## 4.4 插屏
+## 4.4 插屏(代码示例:TabScreenActivity)
 
 ```java
 //获取广告对象
 tabScreenVideoHolder = FoxNativeAdHelper.getADXTabScreenVideoHolder();
 
 //请求广告，在缓存成功onAdCacheSuccess回调后加载广告
-tabScreenVideoHolder.loadAd(TabScreenActivity.this,slotId, userId,200,200,
-             new FoxADXTabScreenHolder.LoadAdListener() {
+tabScreenVideoHolder = FoxNativeAdHelper.getADXTabScreenVideoHolder();
+        tabScreenVideoHolder.loadAd(TabScreenActivity.this,slotId, userId,
+                new FoxADXTabScreenHolder.LoadAdListener() {
 
-                 @Override
-                 public void onAdTimeOut() {
-                 }
+                    @Override
+                    public void onError(int errorCode, String errorBody) {
+                        Log.d(TAG, "onError: ");
+                        FoxBaseToastUtils.showShort("onError");
+                    }
 
-                 @Override
-                 public void onError(int errorCode, String errorBody) {
-                 }
+                    @Override
+                    public void servingSuccessResponse(BidResponse bidResponse) {
+                        Log.d(TAG, "servingSuccessResponse: ");
+                        FoxBaseToastUtils.showShort("servingSuccessResponse");
+                    }
 
-                 @Override
-                 public void onAdLoadFailed() {
-                 }
+                    @Override
+                    public void onAdGetSuccess(FoxADXTabScreenAd foxADXTabScreenAd) {
+                        if (foxADXTabScreenAd!=null){
+                            foxADXTbScreen = foxADXTabScreenAd.get();
+                        }
+                    }
 
-                 @Override
-                 public void onAdLoadSuccess() {
-                 }
+                    @Override
+                    public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        mFoxADXADBean = foxADXADBean;
+                    }
 
-                 @Override
-                 public void onAdCacheSuccess(String id) {
-                 }
+                    @Override
+                    public void onAdCacheCancel(FoxADXADBean foxADXADBean) {
 
-                 @Override
-                 public void onAdCacheCancel(String id) {
-                 }
+                    }
 
-                 @Override
-                 public void onAdCacheFail(String id) {
-                 }
+                    @Override
+                    public void onAdCacheFail(FoxADXADBean foxADXADBean) {
 
-                 @Override
-                 public void onAdCacheEnd(String id) {
-                 }
+                    }
 
-                 @Override
-                 public void onAdCloseClick() {
-                 }
+                    @Override
+                    public void onAdCacheEnd(FoxADXADBean foxADXADBean) {
 
-                 @Override
-                 public void onAdClick() {
-                 }
+                    }
+                });
 
-                 @Override
-                 public void onAdExposure() {
-                 }
-
-                 @Override
-                 public void onAdActivityClose(String data) {
-                 }
-
-                 @Override
-                 public void onAdMessage(MessageData data) {
-                 }
-
-                 @Override
-                 public void servingSuccessResponse(BidResponse bidResponse) {
-                 }
-
-                 @Override
-                 public void onAdGetSuccess(FoxADXTabScreenAd foxADXTabScreenAd) {
-                     foxADXTbScreen = foxADXTabScreenAd.get();
-                 }
-             });
-             
-//在onAdCacheSuccess后调用广告展示(调用show()并传入竞价结果出价(price 必须))
-if (foxADXTbScreen != null){
-    foxADXTbScreen.show(price);
+//缓存完成后展示广告
+if (foxADXTbScreen != null && mFoxADXADBean!=null){
+    mFoxADXADBean.setPrice(price);
+    foxADXTbScreen.show(TabScreenActivity.this,mFoxADXADBean);
 }
 
 //注销广告组件避免内存泄漏
 @Override
- protected void onDestroy() {
-     if (tabScreenVideoHolder != null) {
-         tabScreenVideoHolder.destroy();
-     }
-     super.onDestroy();
- }
+protected void onDestroy() {
+   if (tabScreenVideoHolder != null) {
+      tabScreenVideoHolder.destroy();
+   }
+   if (foxADXTbScreen != null) {
+       oxADXTbScreen.destroy();
+   }
+   super.onDestroy();
+}
+
+
 ```
 
-## 4.5 BANNER/横幅
+## 4.5 BANNER/横幅(代码示例:BannerActivity)
 
 ```java
 //获取广告对象
 adxBannerHolder = FoxNativeAdHelper.getADXBannerHolder();
 
 //请求广告  可传入FoxSize大小自定义 参考LANDER_TMBr
-adxBannerHolder.loadAd(BannerActivity.this, slotId, FoxSize.LANDER_TMBr,new FoxADXBannerHolder.LoadAdListener() {
-                @Override
-                public void onAdGetSuccess(FoxADXBannerAd bannerAd) {
-                    mBannerAd = bannerAd;
-                    if (mBannerAd!=null){
-                        mBannerAd.getPrice()
+ adxBannerHolder.loadAd(BannerActivity.this, slotId, FoxSize.LANDER_TMBr,new FoxADXBannerHolder.LoadAdListener() {
+                    @Override
+                    public void onAdGetSuccess(FoxADXBannerAd bannerAd) {
+                        Log.d(TAG, "onAdGetSuccess: ");
+                        mBannerAd = bannerAd;
                     }
-                }
 
-                @Override
-                public void servingSuccessResponse(BidResponse bidResponse) {
-                    
-                }
+                    @Override
+                    public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        Log.d(TAG, "onAdCacheSuccess: ");
+                        mFoxADXADBean = foxADXADBean;
+                    }
+
+                    @Override
+                    public void servingSuccessResponse(BidResponse bidResponse) {
+                        Log.d(TAG, "servingSuccessResponse: ");
+                        FoxBaseToastUtils.showShort(FoxSDK.getContext(), "servingSuccessResponse");
+                    }
 
 
-                @Override
-                public void onError(int errorCode, String errorBody) {
-                    
-                }
+                    @Override
+                    public void onError(int errorCode, String errorBody) {
+                        Log.d(TAG, "onError: ");
+                        FoxBaseToastUtils.showShort(FoxSDK.getContext(), "onError"+errorCode+errorBody);
+                    }
+                });
 
-                @Override
-                public void onAdLoadFailed() {
-                    
-                }
 
-                @Override
-                public void onAdLoadSuccess() {
-                    
-                }
 
-                @Override
-                public void onAdCloseClick() {
-                   
-                }
-
-                @Override
-                public void onAdClick() {
-                    
-                }
-
-                @Override
-                public void onAdExposure() {
-                    
-                }
-
-                @Override
-                public void onAdActivityClose(String data) {
-                   
-                }
-
-                @Override
-                public void onAdMessage(MessageData data) {
-                    
-                }
-            });
-            
 //广告展示 (调用show()并传入竞价结果出价(price 必须))
-if (mBannerAd!=null &&  mBannerAd.getView() instanceof FoxADXBannerView ){
-            FoxADXBannerView foxADXBannerView = (FoxADXBannerView) mBannerAd.getView();
-            container.removeAllViews();
-            container.addView(mBannerAd.getView());
-            foxADXBannerView.show(price);
+if (mFoxADXADBean!=null && mBannerAd!=null &&  mBannerAd.getView() instanceof FoxADXBannerView ){
+     mFoxADXBannerView = (FoxADXBannerView) mBannerAd.getView();
+     container.removeAllViews();
+     container.addView(mFoxADXBannerView);
+     mFoxADXADBean.setPrice(price);
+     mFoxADXBannerView.show(mFoxADXADBean);
 }
+
 
 //注销广告组件避免内存泄漏
 @Override
@@ -710,95 +696,72 @@ protected void onDestroy() {
     if (adxBannerHolder!=null){
         adxBannerHolder.destroy();
     }
+    if (mFoxADXBannerView!=null){
+        mFoxADXBannerView.destroy();
+    }
 }
-
 ```
 
-## 4.6 浮标/ICON
+## 4.6 浮标/ICON(代码示例:IconActivity)
 
 ```java
 //获取广告对象
-   adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
-    //请求广告 可自己设定展示icon的宽高 
-    //width 宽， height 高
-    //p_width 动画平移动宽默认跟宽一样， p_heighr动画平移动高 默认跟高一样 仅在多图轮博展示
-   adxIconHolder.loadAd(IconActivity.this, slotId, userId, width, height, p_width, p_heighr, new FoxADXIconHolder.LoadAdListener() {
+adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
+//请求广告 可自己设定展示icon的宽高 
+//width 宽， height 高
+adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
+                    @Override
+                    public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
+                        mFoxADXIconAd = foxADXIconAd;
+                    }
+
+                    @Override
+                    public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        mFoxADXADBean = foxADXADBean;
+                    }
+
                     @Override
                     public void servingSuccessResponse(BidResponse bidResponse) {
-                        
+                        Log.d(TAG, "servingSuccessResponse: ");
+                        FoxBaseToastUtils.showShort("servingSuccessResponse: ");
                     }
 
                     @Override
                     public void onError(int errorCode, String errorBody) {
-                       
+                        Log.d(TAG, "onError: ");
+                        FoxBaseToastUtils.showShort("onError: "+errorCode+errorBody);
                     }
+                });
 
-                    @Override
-                    public void onAdLoadFailed() {
-                   
-                    }
-
-                    @Override
-                    public void onAdLoadSuccess() {
-                      
-                    }
-
-                    @Override
-                    public void onAdCloseClick() {
-                     
-                    }
-
-                    @Override
-                    public void onAdClick() {
-                 
-                    }
-
-                    @Override
-                    public void onAdExposure() {
-           
-                    }
-
-                    @Override
-                    public void onAdActivityClose(String data) {
-              
-                    }
-
-                    @Override
-                    public void onAdMessage(MessageData data) {
-                     
-                    }
-
-                    @Override
-                    public void onAdGetSuccess(FoxADXIconAd adxIconAd) {
-                        foxADXIconAd = adxIconAd;
-             
-                    }
-   });
-
-   //展示广告 调用广告展示(调用show()并传入竞价结果出价(price 必须))
-   if (foxADXIconAd!=null){
-       FoxADXIconView foxADXIconView = (FoxADXIconView) foxADXIconAd.getView();
-       foxADXIconView.show(price);
-       ViewGroup contentView = findViewById(android.R.id.content);
-       RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//展示广告 调用广告展示(调用show()并传入竞价结果出价(price 必须))
+if (mFoxADXADBean!=null && mFoxADXIconAd!=null
+                    && mFoxADXIconAd.getView() instanceof FoxADXIconView){
+    mFoxADXIconView = (FoxADXIconView) mFoxADXIconAd.getView();
+    ViewGroup contentView = findViewById(android.R.id.content);
+    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-       contentView.addView(foxADXIconView, params);
-   }
+    contentView.removeAllViews();
+    contentView.addView(mFoxADXIconView, params);
+    mFoxADXADBean.setPrice(price);
+    mFoxADXIconView.show(mFoxADXADBean);
+}
+
    
    //注销广告组件避免内存泄漏
-   @Override
-   protected void onDestroy() {
-        if (adxIconHolder!=null){
-            adxIconHolder.destroy();
-        }
-        super.onDestroy();
-    }
-
-
+ @Override
+protected void onDestroy() {
+    if (adxIconHolder!=null){
+        adxIconHolder.destroy();
+     } 
+     if (mFoxADXIconView!=null){
+         mFoxADXIconView.destroy();
+     }
+     super.onDestroy();
+}
 ```
 
-## 4.7 自渲染类型(信息可使用此类型自渲染实现)
+## 4.7 自渲染类型(信息可使用此类型自渲染实现 代码示例:CustomActivity)
 
 ```java
 //获取广告对象
@@ -857,6 +820,18 @@ protected void onDestroy() {
 ## 广告相关回调接口说明
 
 ```text
+//请求接口成功
+void servingSuccessResponse(BidResponse var1);
+
+//请求发生错误或者数据为空
+void onError(int var1, String var2);
+
+//成功获取广告数据
+void onAdGetSuccess(FoxADXIconAd var1);
+
+//广告数据缓存成功 此接口后可加载广告
+void onAdCacheSuccess(FoxADXADBean var1);
+
 //广告加载失败
 void onAdLoadFailed();
 
@@ -886,7 +861,6 @@ void onAdActivityClose(String data);
 
 //活动页面信息回传 保留 暂无使用
 void onAdMessage(MessageData data)
-
 
 ```
 

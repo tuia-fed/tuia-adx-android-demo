@@ -113,6 +113,8 @@ public class RewardVideoActivity extends AppCompatActivity {
                 mFoxADXADBean.setPrice(price);
                 //打开全屏视频广告
                 mFoxADXRewardVideoAd.openActivity(mFoxADXADBean);
+            }else {
+                FoxBaseToastUtils.showShort("等待缓存成功再播放");
             }
         });
     }

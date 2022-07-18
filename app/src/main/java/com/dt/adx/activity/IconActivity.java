@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.banner.FoxADXBannerAd;
 import com.mediamain.android.adx.view.icon.FoxADXIconAd;
@@ -25,12 +26,13 @@ import com.mediamain.android.view.holder.FoxNativeAdHelper;
 public class IconActivity extends AppCompatActivity {
 
     private static final String TAG = IconActivity.class.getSimpleName();
-    private FoxADXIconAd foxADXIconAd;
-    private FrameLayout container;
+    private FoxADXIconAd mFoxADXIconAd;
     private String userId;
     private int slotId;
     private int price =100;
     private FoxADXIconHolder adxIconHolder;
+    private  FoxADXADBean mFoxADXADBean;
+    private FoxADXIconView mFoxADXIconView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,17 @@ public class IconActivity extends AppCompatActivity {
         findViewById(R.id.btnRequest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
+                adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
+                    @Override
+                    public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
+                        mFoxADXIconAd = foxADXIconAd;
+                    }
+
+                    @Override
+                    public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        mFoxADXADBean = foxADXADBean;
+                    }
+
                     @Override
                     public void servingSuccessResponse(BidResponse bidResponse) {
                         Log.d(TAG, "servingSuccessResponse: ");
@@ -56,68 +68,21 @@ public class IconActivity extends AppCompatActivity {
                         Log.d(TAG, "onError: ");
                         FoxBaseToastUtils.showShort("onError: "+errorCode+errorBody);
                     }
-
-                    @Override
-                    public void onAdLoadFailed() {
-                        Log.d(TAG, "onAdLoadFailed: ");
-                        FoxBaseToastUtils.showShort("onAdLoadFailed: ");
-                    }
-
-                    @Override
-                    public void onAdLoadSuccess() {
-                        Log.d(TAG, "onAdLoadSuccess: ");
-                        FoxBaseToastUtils.showShort("onAdLoadSuccess: ");
-                    }
-
-                    @Override
-                    public void onAdCloseClick() {
-                        Log.d(TAG, "onAdCloseClick: ");
-                        FoxBaseToastUtils.showShort("onAdCloseClick: ");
-                    }
-
-                    @Override
-                    public void onAdClick() {
-                        Log.d(TAG, "onAdClick: ");
-                        FoxBaseToastUtils.showShort("onAdClick: ");
-                    }
-
-                    @Override
-                    public void onAdExposure() {
-                        Log.d(TAG, "onAdExposure: ");
-                        FoxBaseToastUtils.showShort("onAdExposure: ");
-
-                    }
-
-                    @Override
-                    public void onAdActivityClose(String data) {
-                        Log.d(TAG, "onAdActivityClose: ");
-                        FoxBaseToastUtils.showShort("onAdActivityClose: ");
-
-                    }
-
-                    @Override
-                    public void onAdMessage(MessageData data) {
-                        Log.d(TAG, "onAdMessage: ");
-                        FoxBaseToastUtils.showShort("onAdMessage: ");
-                    }
-
-                    @Override
-                    public void onAdGetSuccess(FoxADXIconAd adxIconAd) {
-                        foxADXIconAd = adxIconAd;
-                        FoxBaseToastUtils.showShort("onAdGetSuccess: price="+adxIconAd.getPrice());
-                    }
                 });
             }
         });
         findViewById(R.id.btnShow).setOnClickListener(v -> {
-            if (foxADXIconAd!=null){
-                FoxADXIconView foxADXIconView = (FoxADXIconView) foxADXIconAd.getView();
-                foxADXIconView.show(100);
+            if (mFoxADXADBean!=null && mFoxADXIconAd!=null
+                    && mFoxADXIconAd.getView() instanceof FoxADXIconView){
+                mFoxADXIconView = (FoxADXIconView) mFoxADXIconAd.getView();
                 ViewGroup contentView = findViewById(android.R.id.content);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-                contentView.addView(foxADXIconView, params);
+                contentView.removeAllViews();
+                contentView.addView(mFoxADXIconView, params);
+                mFoxADXADBean.setPrice(price);
+                mFoxADXIconView.show(mFoxADXADBean);
             }
         });
     }
@@ -127,6 +92,9 @@ public class IconActivity extends AppCompatActivity {
     protected void onDestroy() {
         if (adxIconHolder!=null){
             adxIconHolder.destroy();
+        }
+        if (mFoxADXIconView!=null){
+            mFoxADXIconView.destroy();
         }
         super.onDestroy();
     }

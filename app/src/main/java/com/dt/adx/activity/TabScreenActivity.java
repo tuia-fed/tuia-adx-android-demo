@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenAd;
 import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenHolder;
@@ -24,122 +25,41 @@ public class TabScreenActivity extends AppCompatActivity {
     private static final String TAG = TabScreenActivity.class.getSimpleName();
 
     FoxADXTabScreenHolder tabScreenVideoHolder;
+    private FoxADXTbScreen foxADXTbScreen;
+    private FoxADXADBean mFoxADXADBean;
     private FrameLayout mContainer;
     private int slotId;
     private String userId;
     private Activity activity;
+    private int price = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_tab_screnn);
         activity = this;
         if (getIntent() != null) {
             userId = getIntent().getStringExtra("userId");
             slotId = getIntent().getIntExtra("slotId", 0);
         }
-        findViewById(R.id.btnRequest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAd();
-            }
-        });
-        findViewById(R.id.btnShow).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (foxADXTbScreen != null){
-                    foxADXTbScreen.show(100);
-                }
+        findViewById(R.id.btnRequest).setOnClickListener(v -> getAd());
+        findViewById(R.id.btnShow).setOnClickListener(v -> {
+            if (foxADXTbScreen != null && mFoxADXADBean!=null){
+                mFoxADXADBean.setPrice(price);
+                foxADXTbScreen.show(TabScreenActivity.this,mFoxADXADBean);
             }
         });
     }
 
-    private FoxADXTbScreen foxADXTbScreen;
     private void getAd() {
         tabScreenVideoHolder = FoxNativeAdHelper.getADXTabScreenVideoHolder();
-        tabScreenVideoHolder.loadAd(TabScreenActivity.this,slotId, userId,200,200,
+        tabScreenVideoHolder.loadAd(TabScreenActivity.this,slotId, userId,
                 new FoxADXTabScreenHolder.LoadAdListener() {
-
-                    @Override
-                    public void onAdTimeOut() {
-                        Log.d(TAG, "onAdTimeOut: ");
-                        FoxBaseToastUtils.showShort("onAdTimeOut");
-
-                    }
 
                     @Override
                     public void onError(int errorCode, String errorBody) {
                         Log.d(TAG, "onError: ");
                         FoxBaseToastUtils.showShort("onError");
-                    }
-
-                    @Override
-                    public void onAdLoadFailed() {
-                        Log.d(TAG, "onAdLoadFailed: ");
-                        FoxBaseToastUtils.showShort("onAdLoadFailed");
-                    }
-
-                    @Override
-                    public void onAdLoadSuccess() {
-                        Log.d(TAG, "onAdLoadSuccess: ");
-                        FoxBaseToastUtils.showShort("onAdLoadSuccess");
-                    }
-
-                    @Override
-                    public void onAdCacheSuccess(String id) {
-                        FoxBaseToastUtils.showShort("onAdCacheSuccess");
-                    }
-
-                    @Override
-                    public void onAdCacheCancel(String id) {
-
-                    }
-
-                    @Override
-                    public void onAdCacheFail(String id) {
-
-                    }
-
-                    @Override
-                    public void onAdCacheEnd(String id) {
-
-                    }
-
-                    @Override
-                    public void onAdCloseClick() {
-                        Log.d(TAG, "onAdCloseClick: ");
-                        FoxBaseToastUtils.showShort("onAdCloseClick");
-                        jumpMain();
-                    }
-
-                    @Override
-                    public void onAdClick() {
-                        Log.d(TAG, "onAdClick: ");
-                        FoxBaseToastUtils.showShort("onAdClick");
-
-                    }
-
-                    @Override
-                    public void onAdExposure() {
-                        Log.d(TAG, "onAdExposure: ");
-                        FoxBaseToastUtils.showShort("onAdExposure");
-                    }
-
-                    @Override
-                    public void onAdActivityClose(String data) {
-                        Log.d(TAG, "onAdActivityClose: ");
-                        FoxBaseToastUtils.showShort("onAdActivityClose");
-
-                    }
-
-                    @Override
-                    public void onAdMessage(MessageData data) {
-                        Log.d(TAG, "onAdMessage: ");
-                        FoxBaseToastUtils.showShort("onAdMessage");
                     }
 
                     @Override
@@ -150,24 +70,42 @@ public class TabScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onAdGetSuccess(FoxADXTabScreenAd foxADXTabScreenAd) {
-                        foxADXTbScreen = foxADXTabScreenAd.get();
-                        FoxBaseToastUtils.showShort("onAdGetSuccess price="+foxADXTabScreenAd.getPrice());
+                        if (foxADXTabScreenAd!=null){
+                            foxADXTbScreen = foxADXTabScreenAd.get();
+                        }
+                    }
+
+                    @Override
+                    public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        mFoxADXADBean = foxADXADBean;
+                    }
+
+                    @Override
+                    public void onAdCacheCancel(FoxADXADBean foxADXADBean) {
+
+                    }
+
+                    @Override
+                    public void onAdCacheFail(FoxADXADBean foxADXADBean) {
+
+                    }
+
+                    @Override
+                    public void onAdCacheEnd(FoxADXADBean foxADXADBean) {
+
                     }
                 });
     }
 
-    /**
-     * 跳转主页
-     */
-    private void jumpMain() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
 
     @Override
     protected void onDestroy() {
         if (tabScreenVideoHolder != null) {
             tabScreenVideoHolder.destroy();
+        }
+
+        if (foxADXTbScreen != null) {
+            foxADXTbScreen.destroy();
         }
         super.onDestroy();
     }

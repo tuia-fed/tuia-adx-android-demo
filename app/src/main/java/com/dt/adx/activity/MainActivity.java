@@ -46,107 +46,37 @@ public class MainActivity extends AppCompatActivity {
         Intent intent =new Intent();
         switch (view.getId()){
             case R.id.btnSplash:
-                FoxSDK.appConfig = new FoxConfig.Builder()
-                        .setAppId("89967")
-                        .setVersion("1.0.0")
-                        .setBundle("com.dt.adx")
-                        .setName("计步")
-                        .setAppKey("")
-                        .setAppSecret("")
-                        .setUserDataController(null)
-                        .setDebug(true)
-                        .build();
                 intent.setClass(this,SplashActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",421090);
                 break;
             case R.id.btnReward:
-                FoxSDK.appConfig = new FoxConfig.Builder()
-                        .setAppId("89967")
-                        .setVersion("1.0.0")
-                        .setBundle("com.dt.adx")
-                        .setName("计步")
-                        .setAppKey("")
-                        .setAppSecret("")
-                        .setUserDataController(null)
-                        .setDebug(true)
-                        .build();
                 intent.setClass(this,RewardVideoActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",421089);
                 break;
             case R.id.btnFullScreen:
-                FoxSDK.appConfig = new FoxConfig.Builder()
-                        .setAppId("89763")
-                        .setVersion("1.0.0")
-                        .setBundle("com.dt.adx")
-                        .setName("计步")
-                        .setAppKey("")
-                        .setAppSecret("")
-                        .setUserDataController(null)
-                        .setDebug(true)
-                        .build();
                 intent.setClass(this,FullScreenVideoActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",419856);
                 break;
 
             case R.id.btnBanner:
-                FoxSDK.appConfig = new FoxConfig.Builder()
-                        .setAppId("89763")
-                        .setVersion("1.0.0")
-                        .setBundle("com.dt.adx")
-                        .setName("计步")
-                        .setAppKey("")
-                        .setAppSecret("")
-                        .setUserDataController(null)
-                        .setDebug(true)
-                        .build();
                 intent.setClass(this,BannerActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",421090);
                 break;
             case R.id.btnTabScreen:
-                FoxSDK.appConfig = new FoxConfig.Builder()
-                        .setAppId("89763")
-                        .setVersion("1.0.0")
-                        .setBundle("com.dt.adx")
-                        .setName("计步")
-                        .setAppKey("")
-                        .setAppSecret("")
-                        .setUserDataController(null)
-                        .setDebug(true)
-                        .build();
                 intent.setClass(this,TabScreenActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",419855);
                 break;
             case R.id.btnIcon:
-                FoxSDK.appConfig = new FoxConfig.Builder()
-                        .setAppId("89763")
-                        .setVersion("1.0.0")
-                        .setBundle("com.dt.adx")
-                        .setName("计步")
-                        .setAppKey("")
-                        .setAppSecret("")
-                        .setUserDataController(null)
-                        .setDebug(true)
-                        .build();
                 intent.setClass(this,IconActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",421090);
                 break;
             case R.id.btnCustom:
-                FoxSDK.appConfig = new FoxConfig.Builder()
-                        .setAppId("89606")
-                        .setVersion("1.0.0")
-                        .setBundle("com.dt.adx")
-                        .setName("计步")
-                        .setAppKey("")
-                        .setAppSecret("")
-                        .setUserDataController(null)
-                        .setDebug(true)
-                        .build();
                 intent.setClass(this,CustomActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",419307);

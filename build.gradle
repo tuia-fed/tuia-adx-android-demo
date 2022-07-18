@@ -34,6 +34,13 @@ allprojects {
             }
             url 'https://packages.aliyun.com/maven/repository/2253698-release-0SXAnL/'
         }
+        maven {
+            credentials {
+                username '62d11e53cf51ade33b4ae2b6'
+                password 'XoIn0VA8L3sF'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2253698-snapshot-WwZwlE/'
+        }
     }
 }
 
