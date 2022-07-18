@@ -46,7 +46,55 @@ public class TabScreenActivity extends AppCompatActivity {
         findViewById(R.id.btnShow).setOnClickListener(v -> {
             if (foxADXTbScreen != null && mFoxADXADBean!=null){
                 mFoxADXADBean.setPrice(price);
+                foxADXTbScreen.setAdListener(new FoxADXTabScreenAd.LoadAdInteractionListener() {
+                    @Override
+                    public void onAdLoadFailed() {
+                        Log.d(TAG, "onAdLoadFailed: ");
+                    }
+
+                    @Override
+                    public void onAdLoadSuccess() {
+                        Log.d(TAG, "onAdLoadSuccess: ");
+                    }
+
+                    @Override
+                    public void onAdClick() {
+                        Log.d(TAG, "onAdClick: ");
+                    }
+
+                    @Override
+                    public void onAdExposure() {
+                        Log.d(TAG, "onAdExposure: ");
+                    }
+
+                    @Override
+                    public void onAdTimeOut() {
+                        Log.d(TAG, "onAdTimeOut: ");
+                    }
+
+                    @Override
+                    public void onAdJumpClick() {
+                        Log.d(TAG, "onAdJumpClick: ");
+                    }
+
+                    @Override
+                    public void onAdCloseClick() {
+                        Log.d(TAG, "onAdCloseClick: ");
+                    }
+
+                    @Override
+                    public void onAdActivityClose(String s) {
+                        Log.d(TAG, "onAdActivityClose: ");
+                    }
+
+                    @Override
+                    public void onAdMessage(MessageData messageData) {
+                        Log.d(TAG, "onAdMessage: ");
+                    }
+                });
                 foxADXTbScreen.show(TabScreenActivity.this,mFoxADXADBean);
+                mFoxADXADBean = null;
+                foxADXTbScreen.destroy();
             }
         });
     }
@@ -58,18 +106,17 @@ public class TabScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(int errorCode, String errorBody) {
-                        Log.d(TAG, "onError: ");
-                        FoxBaseToastUtils.showShort("onError");
+                        Log.d(TAG, "onError: "+errorCode+errorBody);
                     }
 
                     @Override
                     public void servingSuccessResponse(BidResponse bidResponse) {
                         Log.d(TAG, "servingSuccessResponse: ");
-                        FoxBaseToastUtils.showShort("servingSuccessResponse");
                     }
 
                     @Override
                     public void onAdGetSuccess(FoxADXTabScreenAd foxADXTabScreenAd) {
+                        Log.d(TAG, "onAdGetSuccess: ");
                         if (foxADXTabScreenAd!=null){
                             foxADXTbScreen = foxADXTabScreenAd.get();
                         }
@@ -77,22 +124,24 @@ public class TabScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        Log.d(TAG, "onAdCacheSuccess: ");
                         mFoxADXADBean = foxADXADBean;
                     }
 
                     @Override
                     public void onAdCacheCancel(FoxADXADBean foxADXADBean) {
+                        Log.d(TAG, "onAdCacheCancel: ");
 
                     }
 
                     @Override
                     public void onAdCacheFail(FoxADXADBean foxADXADBean) {
-
+                        Log.d(TAG, "onAdCacheFail: ");
                     }
 
                     @Override
                     public void onAdCacheEnd(FoxADXADBean foxADXADBean) {
-
+                        Log.d(TAG, "onAdCacheEnd: ");
                     }
                 });
     }

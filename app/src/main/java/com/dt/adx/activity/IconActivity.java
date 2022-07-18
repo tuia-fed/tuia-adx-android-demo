@@ -49,11 +49,13 @@ public class IconActivity extends AppCompatActivity {
                 adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
                     @Override
                     public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
+                        Log.d(TAG, "onAdGetSuccess: ");
                         mFoxADXIconAd = foxADXIconAd;
                     }
 
                     @Override
                     public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        Log.d(TAG, "onAdCacheSuccess: ");
                         mFoxADXADBean = foxADXADBean;
                     }
 
@@ -82,6 +84,57 @@ public class IconActivity extends AppCompatActivity {
                 contentView.removeAllViews();
                 contentView.addView(mFoxADXIconView, params);
                 mFoxADXADBean.setPrice(price);
+                mFoxADXIconView.setAdListener(new FoxADXIconAd.LoadAdInteractionListener() {
+                    @Override
+                    public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
+                        Log.d(TAG, "onAdGetSuccess: ");
+                    }
+
+                    @Override
+                    public void onAdLoadFailed() {
+                        Log.d(TAG, "onAdLoadFailed: ");
+                    }
+
+                    @Override
+                    public void onAdLoadSuccess() {
+                        Log.d(TAG, "onAdLoadSuccess: ");
+                    }
+
+                    @Override
+                    public void onAdClick() {
+                        Log.d(TAG, "onAdClick: ");
+                    }
+
+                    @Override
+                    public void onAdExposure() {
+                        Log.d(TAG, "onAdExposure: ");
+                    }
+
+                    @Override
+                    public void onAdCloseClick() {
+                        Log.d(TAG, "onAdCloseClick: ");
+                    }
+
+                    @Override
+                    public void onAdActivityClose(String s) {
+                        Log.d(TAG, "onAdActivityClose: ");
+                    }
+
+                    @Override
+                    public void onAdMessage(MessageData messageData) {
+                        Log.d(TAG, "onAdMessage: ");
+                    }
+
+                    @Override
+                    public void servingSuccessResponse(BidResponse bidResponse) {
+                        Log.d(TAG, "servingSuccessResponse: ");
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        Log.d(TAG, "onError: ");
+                    }
+                });
                 mFoxADXIconView.show(mFoxADXADBean);
             }
         });

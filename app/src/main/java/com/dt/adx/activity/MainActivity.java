@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnBanner:
                 intent.setClass(this,BannerActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421090);
+                intent.putExtra("slotId",421493);
                 break;
             case R.id.btnTabScreen:
                 intent.setClass(this,TabScreenActivity.class);
@@ -74,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnIcon:
                 intent.setClass(this,IconActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421090);
+                intent.putExtra("slotId",421492);
                 break;
             case R.id.btnCustom:
                 intent.setClass(this,CustomActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",419307);
+                intent.putExtra("slotId",419856);
                 break;
             default:
                 break;

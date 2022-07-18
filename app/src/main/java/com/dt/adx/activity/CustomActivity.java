@@ -17,7 +17,9 @@ import com.mediamain.android.adx.view.customer.FoxADXCustomerHolder;
 import com.mediamain.android.adx.view.customer.FoxADXCustomerTm;
 import com.mediamain.android.view.bean.MessageData;
 
-public class CustomActivity extends AppCompatActivity implements FoxADXCustomerHolder.LoadAdListener {
+public class CustomActivity extends AppCompatActivity {
+
+    private static final String TAG = CustomActivity.class.getSimpleName();
 
     private FoxADXCustomerTm mOxCustomerTm;
     private TextView textView;
@@ -40,27 +42,35 @@ public class CustomActivity extends AppCompatActivity implements FoxADXCustomerH
         mOxCustomerTm.setAdListener(new FoxADXCustomerHolder.LoadAdListener() {
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
-
+                Log.d(TAG, "servingSuccessResponse: ");
+                FoxBaseToastUtils.showShort(getApplicationContext(), "广告请求成功");
+                textView.setText(bidResponse.toString());
             }
 
             @Override
             public void onError(int i, String s) {
-
+                Log.d(TAG, "onError: "+i+s);
             }
 
             @Override
             public void onAdGetSuccess(Bid bid, BidAdm bidAdm) {
-
+                Log.d(TAG, "onAdGetSuccess: ");
+                FoxBaseToastUtils.showShort("onAdGetSuccess");
+                mBid = bid;
+                mOxCustomerTm.adExposed(mPrice);
+                if (textView!=null){
+                    textView.setText(mBid.toString());
+                }
             }
 
             @Override
             public void onAdActivityClose(String s) {
-
+                Log.d(TAG, "onAdActivityClose: ");
             }
 
             @Override
             public void onAdMessage(MessageData messageData) {
-
+                Log.d(TAG, "onAdMessage: ");
             }
         });
         Button btnRequest = (Button) findViewById(R.id.btnRequest);
@@ -80,45 +90,5 @@ public class CustomActivity extends AppCompatActivity implements FoxADXCustomerH
             mOxCustomerTm.destroy();
         }
         super.onDestroy();
-    }
-
-
-    @Override
-    public void servingSuccessResponse(BidResponse bidResponse) {
-        FoxBaseToastUtils.showShort(getApplicationContext(), "广告请求成功");
-        Log.d("========", "onReceiveAd:" + bidResponse.toString());
-        FoxBaseToastUtils.showShort("servingSuccessResponse");
-        textView.setText(bidResponse.toString());
-    }
-
-    @Override
-    public void onError(int errorCode, String errorBody) {
-        Log.d("========", "onFailedToReceiveAd");
-        FoxBaseToastUtils.showShort("onError"+errorCode+errorBody);
-    }
-
-    @Override
-    public void onAdGetSuccess(Bid bid, BidAdm bidAdm) {
-        FoxBaseToastUtils.showShort("onAdGetSuccess");
-        mBid = bid;
-        mOxCustomerTm.adExposed(mPrice);
-        if (textView!=null){
-            textView.setText(mBid.toString());
-        }
-    }
-
-    @Override
-    public void onAdActivityClose(String data) {
-        FoxBaseToastUtils.showShort("onAdActivityClose");
-
-        Log.d("========", "onAdActivityClose" + data);
-        FoxBaseToastUtils.showShort(getApplicationContext(), "活动页面关闭 发奖信息：" + data);
-    }
-
-
-    @Override
-    public void onAdMessage(MessageData data) {
-        FoxBaseToastUtils.showShort("onAdMessage");
-
     }
 }

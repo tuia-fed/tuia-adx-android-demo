@@ -55,58 +55,56 @@ public class RewardVideoActivity extends AppCompatActivity {
                 mFoxADXRewardVideoAd.setLoadVideoAdInteractionListener(new FoxADXRewardVideoAd.LoadVideoAdInteractionListener() {
                     @Override
                     public void onAdLoadFailed() {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdLoadFailed");
+                        Log.d(TAG, "onAdLoadFailed: ");
                     }
 
                     @Override
                     public void onAdLoadSuccess() {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdLoadSuccess");
+                        Log.d(TAG, "onAdLoadSuccess: ");
                     }
 
                     @Override
                     public void onAdClick() {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdClick");
+                        Log.d(TAG, "onAdClick: ");
 
                     }
 
                     @Override
                     public void onAdExposure() {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdExposure");
+                        Log.d(TAG, "onAdExposure: ");
 
                     }
 
                     @Override
                     public void onAdTimeOut() {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdTimeOut");
-
+                        Log.d(TAG, "onAdTimeOut: ");
                     }
 
                     @Override
                     public void onAdJumpClick() {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdJumpClick");
-
+                        Log.d(TAG, "onAdJumpClick: ");
                     }
 
                     @Override
                     public void onAdReward(boolean isReward) {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdReward");
+                        Log.d(TAG, "onAdReward: =="+isReward);
 
                     }
 
                     @Override
                     public void onAdCloseClick() {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdCloseClick");
+                        Log.d(TAG, "onAdCloseClick: ");
 
                     }
 
                     @Override
                     public void onAdActivityClose(String data) {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdActivityClose");
+                        Log.d(TAG, "onAdActivityClose: ");
                     }
 
                     @Override
                     public void onAdMessage(MessageData data) {
-                        FoxBaseToastUtils.showShort(mActivity,"onAdMessage");
+                        Log.d(TAG, "onAdMessage: ");
                     }
                 });
                 //设置竞价胜出价格
@@ -127,38 +125,37 @@ public class RewardVideoActivity extends AppCompatActivity {
             @Override
             public void onAdGetSuccess(FoxADXRewardVideoAd foxADXRewardVideoAd) {
                 mFoxADXRewardVideoAd = foxADXRewardVideoAd;
-                FoxBaseToastUtils.showShort(mActivity,"onAdGetSuccess price="+foxADXRewardVideoAd.getECPM());
+                Log.d(TAG, "onAdGetSuccess: ");
             }
 
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
-                FoxBaseToastUtils.showShort(mActivity,"onAdCacheSuccess");
+                Log.d(TAG, "onAdCacheSuccess: ");
                 mFoxADXADBean = foxADXADBean;
             }
 
             @Override
             public void onAdCacheCancel(String id) {
-                FoxBaseToastUtils.showShort(mActivity,"onAdCacheCancel");
+                Log.d(TAG, "onAdCacheCancel: ");
             }
 
             @Override
             public void onAdCacheFail(String id) {
-                FoxBaseToastUtils.showShort(mActivity,"onAdCacheFail");
+                Log.d(TAG, "onAdCacheFail: ");
             }
 
             @Override
             public void onAdCacheEnd(String id) {
-                FoxBaseToastUtils.showShort(mActivity,"onAdCacheEnd");
+                Log.d(TAG, "onAdCacheEnd: ");
             }
 
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
-                FoxBaseToastUtils.showShort(mActivity,"servingSuccessResponse ");
+                Log.d(TAG, "servingSuccessResponse: ");
             }
 
             @Override
             public void onError(int errorCode, String errorBody) {
-                Log.d(TAG, "onError: "+errorCode+errorBody);
                 FoxBaseToastUtils.showShort(mActivity,"onError "+errorCode+errorBody);
             }
         });

@@ -56,6 +56,57 @@ public class BannerActivity extends AppCompatActivity {
                 if (mFoxADXADBean!=null){
                     mFoxADXADBean.setPrice(price);
                 }
+                mFoxADXBannerView.setAdListener(new FoxADXBannerAd.LoadAdInteractionListener() {
+                    @Override
+                    public void onAdGetSuccess(FoxADXBannerAd foxADXBannerAd) {
+                        Log.d(TAG, "onAdGetSuccess: ");
+                    }
+
+                    @Override
+                    public void onAdLoadFailed() {
+                        Log.d(TAG, "onAdLoadFailed: ");
+                    }
+
+                    @Override
+                    public void onAdLoadSuccess() {
+                        Log.d(TAG, "onAdLoadSuccess: ");
+                    }
+
+                    @Override
+                    public void onAdClick() {
+                        Log.d(TAG, "onAdClick: ");
+                    }
+
+                    @Override
+                    public void onAdExposure() {
+                        Log.d(TAG, "onAdExposure: ");
+                    }
+
+                    @Override
+                    public void onAdCloseClick() {
+                        Log.d(TAG, "onAdCloseClick: ");
+                    }
+
+                    @Override
+                    public void onAdActivityClose(String s) {
+                        Log.d(TAG, "onAdActivityClose: ");
+                    }
+
+                    @Override
+                    public void onAdMessage(MessageData messageData) {
+                        Log.d(TAG, "onAdMessage: ");
+                    }
+
+                    @Override
+                    public void servingSuccessResponse(BidResponse bidResponse) {
+                        Log.d(TAG, "servingSuccessResponse: ");
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        Log.d(TAG, "onError: ");
+                    }
+                });
                 mFoxADXBannerView.show(mFoxADXADBean);
             }
         });
