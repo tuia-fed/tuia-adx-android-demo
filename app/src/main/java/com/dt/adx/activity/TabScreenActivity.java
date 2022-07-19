@@ -93,8 +93,6 @@ public class TabScreenActivity extends AppCompatActivity {
                     }
                 });
                 foxADXTbScreen.show(TabScreenActivity.this,mFoxADXADBean);
-                mFoxADXADBean = null;
-                foxADXTbScreen.destroy();
             }
         });
     }
