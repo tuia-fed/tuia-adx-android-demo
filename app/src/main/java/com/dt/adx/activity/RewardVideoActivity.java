@@ -38,7 +38,7 @@ public class RewardVideoActivity extends AppCompatActivity {
      * /分 
      */
     private int price =100;
-    private final boolean isCached = false;
+    private final boolean isCached = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +147,9 @@ public class RewardVideoActivity extends AppCompatActivity {
                 Log.d(TAG, "onAdCacheSuccess: ");
                 //缓存模式 先缓存本地视频 再播放不会卡顿
                 mFoxADXADBean = foxADXADBean;
+                if (isCached){
+                    openAD();
+                }
             }
 
             @Override

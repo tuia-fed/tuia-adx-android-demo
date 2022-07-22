@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
     private int price =100;
     private FoxADXSplashAd mFoxADXSplashAd;
     private FoxADXADBean mFoxADXADBean;
-    private final boolean isCached = false;
+    private final boolean isCached = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

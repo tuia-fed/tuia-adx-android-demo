@@ -36,7 +36,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     private String mUrl;
     private int price = 100;
     private Activity mActivity;
-    private boolean isCached = false;
+    private final boolean isCached = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

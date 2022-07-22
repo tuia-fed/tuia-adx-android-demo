@@ -26,7 +26,7 @@ public class TabScreenActivity extends AppCompatActivity {
     private String userId;
     private Activity activity;
     private int price = 100;
-    private final boolean isCached = false;
+    private final boolean isCached = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class TabScreenActivity extends AppCompatActivity {
                         if (foxADXTabScreenAd!=null){
                             mFoxADXTabScreenAd = foxADXTabScreenAd;
                             mFoxADXADBean = foxADXTabScreenAd.getFoxADXADBean();
-                            if (!isCached && mFoxADXADBean!=null){
+                            if (!isCached){
                                 //在线播放模式  在此回调之后可用
                                 openAD();
                             }
@@ -82,9 +82,8 @@ public class TabScreenActivity extends AppCompatActivity {
                         Log.d(TAG, "onAdCacheSuccess: ");
                         mFoxADXADBean = foxADXADBean;
                         //缓存模式 先缓存本地视频 再播放不会卡顿
-                        if (isCached && mFoxADXADBean!=null && mFoxADXTabScreenAd!=null){
-                            mFoxADXADBean.setPrice(price);
-                            mFoxADXTabScreenAd.openActivity(mFoxADXADBean);
+                        if (isCached){
+                            openAD();
                         }
                     }
 
