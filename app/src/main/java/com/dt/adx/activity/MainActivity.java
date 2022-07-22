@@ -45,11 +45,6 @@ public class MainActivity extends AppCompatActivity {
     public void click(View view){
         Intent intent =new Intent();
         switch (view.getId()){
-            case R.id.btnSplash:
-                intent.setClass(this,SplashActivity.class);
-                intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421090);
-                break;
             case R.id.btnReward:
                 intent.setClass(this,RewardVideoActivity.class);
                 intent.putExtra("userId","test-1");
@@ -60,16 +55,20 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",419856);
                 break;
-
-            case R.id.btnBanner:
-                intent.setClass(this,BannerActivity.class);
+            case R.id.btnSplash:
+                intent.setClass(this,SplashActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421493);
+                intent.putExtra("slotId",421090);
                 break;
             case R.id.btnTabScreen:
                 intent.setClass(this,TabScreenActivity.class);
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",419855);
+                break;
+            case R.id.btnBanner:
+                intent.setClass(this,BannerActivity.class);
+                intent.putExtra("userId","test-1");
+                intent.putExtra("slotId",421493);
                 break;
             case R.id.btnIcon:
                 intent.setClass(this,IconActivity.class);

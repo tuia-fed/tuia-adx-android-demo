@@ -1,22 +1,16 @@
 package com.dt.adx.activity;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import com.dt.adx.R;
-import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenAd;
 import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenHolder;
-import com.mediamain.android.adx.view.tabscreen.FoxADXTbScreen;
+import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenHolderImpl;
 import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
@@ -24,14 +18,15 @@ public class TabScreenActivity extends AppCompatActivity {
 
     private static final String TAG = TabScreenActivity.class.getSimpleName();
 
-    FoxADXTabScreenHolder tabScreenVideoHolder;
-    private FoxADXTbScreen foxADXTbScreen;
+    FoxADXTabScreenHolderImpl tabScreenVideoHolder;
     private FoxADXADBean mFoxADXADBean;
+    private FoxADXTabScreenAd mFoxADXTabScreenAd;
     private FrameLayout mContainer;
     private int slotId;
     private String userId;
     private Activity activity;
     private int price = 100;
+    private final boolean isCached = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,62 +39,19 @@ public class TabScreenActivity extends AppCompatActivity {
         }
         findViewById(R.id.btnRequest).setOnClickListener(v -> getAd());
         findViewById(R.id.btnShow).setOnClickListener(v -> {
-            if (foxADXTbScreen != null && mFoxADXADBean!=null){
+            //缓存模式 先缓存本地视频 再播放不会卡顿
+            if (isCached && mFoxADXADBean!=null && mFoxADXTabScreenAd!=null){
                 mFoxADXADBean.setPrice(price);
-                foxADXTbScreen.setAdListener(new FoxADXTabScreenAd.LoadAdInteractionListener() {
-                    @Override
-                    public void onAdLoadFailed() {
-                        Log.d(TAG, "onAdLoadFailed: ");
-                    }
-
-                    @Override
-                    public void onAdLoadSuccess() {
-                        Log.d(TAG, "onAdLoadSuccess: ");
-                    }
-
-                    @Override
-                    public void onAdClick() {
-                        Log.d(TAG, "onAdClick: ");
-                    }
-
-                    @Override
-                    public void onAdExposure() {
-                        Log.d(TAG, "onAdExposure: ");
-                    }
-
-                    @Override
-                    public void onAdTimeOut() {
-                        Log.d(TAG, "onAdTimeOut: ");
-                    }
-
-                    @Override
-                    public void onAdJumpClick() {
-                        Log.d(TAG, "onAdJumpClick: ");
-                    }
-
-                    @Override
-                    public void onAdCloseClick() {
-                        Log.d(TAG, "onAdCloseClick: ");
-                    }
-
-                    @Override
-                    public void onAdActivityClose(String s) {
-                        Log.d(TAG, "onAdActivityClose: ");
-                    }
-
-                    @Override
-                    public void onAdMessage(MessageData messageData) {
-                        Log.d(TAG, "onAdMessage: ");
-                    }
-                });
-                foxADXTbScreen.show(TabScreenActivity.this,mFoxADXADBean);
+                mFoxADXTabScreenAd.openActivity(mFoxADXADBean);
             }
         });
     }
 
     private void getAd() {
-        tabScreenVideoHolder = FoxNativeAdHelper.getADXTabScreenVideoHolder();
-        tabScreenVideoHolder.loadAd(TabScreenActivity.this,slotId, userId,
+        tabScreenVideoHolder = (FoxADXTabScreenHolderImpl) FoxNativeAdHelper.getADXTabScreenVideoHolder();
+        //默认缓存模式 可通过配置设置直接加载广告
+        tabScreenVideoHolder.setCached(isCached);
+        tabScreenVideoHolder.loadAd(slotId, userId,
                 new FoxADXTabScreenHolder.LoadAdListener() {
 
                     @Override
@@ -116,7 +68,12 @@ public class TabScreenActivity extends AppCompatActivity {
                     public void onAdGetSuccess(FoxADXTabScreenAd foxADXTabScreenAd) {
                         Log.d(TAG, "onAdGetSuccess: ");
                         if (foxADXTabScreenAd!=null){
-                            foxADXTbScreen = foxADXTabScreenAd.get();
+                            mFoxADXTabScreenAd = foxADXTabScreenAd;
+                            mFoxADXADBean = foxADXTabScreenAd.getFoxADXADBean();
+                            if (!isCached && mFoxADXADBean!=null){
+                                //在线播放模式  在此回调之后可用
+                                openAD();
+                            }
                         }
                     }
 
@@ -124,6 +81,11 @@ public class TabScreenActivity extends AppCompatActivity {
                     public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
                         Log.d(TAG, "onAdCacheSuccess: ");
                         mFoxADXADBean = foxADXADBean;
+                        //缓存模式 先缓存本地视频 再播放不会卡顿
+                        if (isCached && mFoxADXADBean!=null && mFoxADXTabScreenAd!=null){
+                            mFoxADXADBean.setPrice(price);
+                            mFoxADXTabScreenAd.openActivity(mFoxADXADBean);
+                        }
                     }
 
                     @Override
@@ -144,15 +106,53 @@ public class TabScreenActivity extends AppCompatActivity {
                 });
     }
 
+    private void openAD() {
+        if (mFoxADXADBean!=null && mFoxADXTabScreenAd!=null){
+            mFoxADXTabScreenAd.setLoadAdInteractionListener(new FoxADXTabScreenAd.LoadAdInteractionListener() {
+                @Override
+                public void onAdLoadFailed() {
+                    Log.d(TAG, "onAdLoadFailed: ");
+                }
+
+                @Override
+                public void onAdLoadSuccess() {
+                    Log.d(TAG, "onAdLoadSuccess: ");
+                }
+
+                @Override
+                public void onAdClick() {
+                    Log.d(TAG, "onAdClick: ");
+                }
+
+                @Override
+                public void onAdExposure() {
+                    Log.d(TAG, "onAdExposure: ");
+                }
+
+                @Override
+                public void onAdCloseClick() {
+                    Log.d(TAG, "onAdCloseClick: ");
+                }
+
+                @Override
+                public void onAdActivityClose(String s) {
+                    Log.d(TAG, "onAdActivityClose: ");
+                }
+
+                @Override
+                public void onAdMessage(MessageData messageData) {
+                    Log.d(TAG, "onAdMessage: ");
+                }
+            });
+            mFoxADXADBean.setPrice(price);
+            mFoxADXTabScreenAd.openActivity(mFoxADXADBean);
+        }
+    }
 
     @Override
     protected void onDestroy() {
         if (tabScreenVideoHolder != null) {
             tabScreenVideoHolder.destroy();
-        }
-
-        if (foxADXTbScreen != null) {
-            foxADXTbScreen.destroy();
         }
         super.onDestroy();
     }
