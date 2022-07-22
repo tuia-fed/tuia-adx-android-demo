@@ -64,7 +64,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     private void getAd() {
         nativeIVideoHolder = (FoxADXFullScreenVideoHolderImpl) FoxNativeAdHelper.getADXFullScreenHolder();
         //默认缓存模式 可通过配置设置直接加载广告
-        nativeIVideoHolder.setCached(false);
+        nativeIVideoHolder.setCached(isCached);
         nativeIVideoHolder.loadAd(slotId, userId, new FoxADXFullScreenVideoHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXFullScreenVideoAd foxADXFullScreenVideoAd) {
