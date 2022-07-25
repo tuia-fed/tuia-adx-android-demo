@@ -1,8 +1,13 @@
 package com.dt.adx.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.dt.adx.R;
@@ -35,10 +40,39 @@ import com.mediamain.android.controller.FoxUserDataController;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String[] NEEDED_PERMISSIONS = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!lacksPermissions(this, NEEDED_PERMISSIONS)) {
+                ActivityCompat.requestPermissions(this, NEEDED_PERMISSIONS, 0);
+            }
+        }
+    }
+
+    /**
+     * 判断权限集合
+     * permissions 权限数组
+     * return false-表示没有改权限  true-表示权限已开启
+     */
+    public boolean lacksPermissions(Context mContexts, String[] permissions) {
+        for (String permission : permissions) {
+            if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @SuppressLint("NonConstantResourceId")
