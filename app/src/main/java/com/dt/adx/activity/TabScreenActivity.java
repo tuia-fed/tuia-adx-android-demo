@@ -30,6 +30,9 @@ public class TabScreenActivity extends AppCompatActivity {
     private int slotId;
     private String userId;
     private Activity activity;
+    /**
+     * 竞胜价格设置
+     */
     private int price = 100;
     private final boolean isCached = true;
 

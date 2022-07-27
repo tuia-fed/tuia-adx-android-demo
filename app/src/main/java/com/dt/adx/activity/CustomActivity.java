@@ -19,8 +19,14 @@ import com.mediamain.android.view.bean.MessageData;
 
 /**
  * 请求广告             getAd()
+ *
  * 获取竞价价格          getECPM();
- * 设置竞胜价格展示广告   openAd()
+ *
+ * 广告展示及曝光        mOxCustomerTm.adExposed(mPrice);
+ *
+ * 设置竞胜价格点击广告   mOxCustomerTm.adClicked(mPrice);
+ *                     mOxCustomerTm.openFoxActivity(mBid.getDurl());
+ *
  * 销毁广告组件          destroy();
  */
 public class CustomActivity extends AppCompatActivity {
@@ -31,7 +37,17 @@ public class CustomActivity extends AppCompatActivity {
     private TextView textView;
     private String userId;
     private int slotId;
+    /**
+     * 广告信息
+     */
     private Bid mBid;
+    /**
+     * 广告展示信息
+     */
+    private BidAdm mBidAdm;
+    /**
+     * 竞胜价格
+     */
     private int mPrice;
 
     @Override
@@ -44,7 +60,23 @@ public class CustomActivity extends AppCompatActivity {
             userId = getIntent().getStringExtra("userId");
             slotId = getIntent().getIntExtra("slotId", 0);
         }
+        Button btnRequest = (Button) findViewById(R.id.btnRequest);
+        btnRequest.setOnClickListener(v -> getAd());
+        textView.setOnClickListener(v -> {
+           openAd();
+        });
         mOxCustomerTm = new FoxADXCustomerTm(this);
+    }
+
+    private void openAd() {
+        if (mOxCustomerTm != null && mBid != null
+                && !TextUtils.isEmpty(mBid.getDurl())) {
+            mOxCustomerTm.adClicked(mPrice);
+            mOxCustomerTm.openFoxActivity(mBid.getDurl());
+        }
+    }
+
+    private void getAd() {
         mOxCustomerTm.setAdListener(new FoxADXCustomerHolder.LoadAdListener() {
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
@@ -63,6 +95,7 @@ public class CustomActivity extends AppCompatActivity {
                 Log.d(TAG, "onAdGetSuccess: ");
                 FoxBaseToastUtils.showShort("onAdGetSuccess");
                 mBid = bid;
+                mBidAdm = bidAdm;
                 mOxCustomerTm.adExposed(mPrice);
                 if (textView!=null){
                     textView.setText(mBid.toString());
@@ -79,15 +112,7 @@ public class CustomActivity extends AppCompatActivity {
                 Log.d(TAG, "onAdMessage: ");
             }
         });
-        Button btnRequest = (Button) findViewById(R.id.btnRequest);
-        btnRequest.setOnClickListener(v -> mOxCustomerTm.loadAd(slotId, userId, FoxADXConstant.AD_TYPE_REWARD_VIDEO));
-        textView.setOnClickListener(v -> {
-            if (mOxCustomerTm != null && mBid != null
-                    && !TextUtils.isEmpty(mBid.getDurl())) {
-                mOxCustomerTm.adClicked(mPrice);
-                mOxCustomerTm.openFoxActivity(mBid.getDurl());
-            }
-        });
+        mOxCustomerTm.loadAd(slotId,userId,FoxADXConstant.AD_TYPE_FULL_SCREEN);
     }
 
     @Override

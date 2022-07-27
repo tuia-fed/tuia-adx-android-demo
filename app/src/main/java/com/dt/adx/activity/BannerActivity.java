@@ -31,6 +31,9 @@ public class BannerActivity extends AppCompatActivity {
     private String userId;
     private int slotId;
     private FoxADXBannerAd mBannerAd;
+    /**
+     * 竞胜价格设置
+     */
     private int price =100;
     private  FoxADXBannerHolder adxBannerHolder;
     private  FoxADXADBean mFoxADXADBean;

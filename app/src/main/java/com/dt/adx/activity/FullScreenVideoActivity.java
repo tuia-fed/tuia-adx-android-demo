@@ -1,30 +1,18 @@
 package com.dt.adx.activity;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
-
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
-import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoAd;
 import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoHolder;
 import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoHolderImpl;
-import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoView;
 import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
-import com.mediamain.android.view.interfaces.FoxVideoListener;
-
 /**
  * 请求广告             getAd()
  * 获取竞价价格          getECPM();
@@ -39,6 +27,9 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     FoxADXFullScreenVideoHolderImpl nativeIVideoHolder;
     private int slotId;
     private String userId;
+    /**
+     * 竞胜价格设置
+     */
     private int price = 100;
     private Activity mActivity;
     private final boolean isCached = true;

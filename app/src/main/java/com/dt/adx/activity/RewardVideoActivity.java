@@ -30,6 +30,9 @@ public class RewardVideoActivity extends AppCompatActivity {
     private String userId;
     private Activity mActivity;
     private FoxADXADBean mFoxADXADBean;
+    /**
+     * 竞胜价格设置
+     */
     private int price =100;
     private final boolean isCached = true;
 

@@ -15,6 +15,11 @@ public class MyApplication extends Application {
         super.onCreate();
         FoxUserDataController userDataController = FoxUserDataController.getInstance();
         userDataController.setUserAgree(true);
+        /**
+         * 设置获取的oaid  为了兼容oaid版本 允许媒体传入获取的oaid
+         * 可以在广告请求前任意位置调用既可
+         */
+        FoxUserDataController.getInstance().setOaid("");
         FoxConfig config = new FoxConfig.Builder()
                 .setAppId("40892")
                 .setVersion("1.0.0")

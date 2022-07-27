@@ -33,6 +33,9 @@ public class SplashActivity extends AppCompatActivity {
     private int slotId =  421090;
     private String userId;
     private FoxADXShView foxADXShView;
+    /**
+     * 竞胜价格设置
+     */
     private int price =100;
     private FoxADXADBean mFoxADXADBean;
     private final boolean isCached = true;

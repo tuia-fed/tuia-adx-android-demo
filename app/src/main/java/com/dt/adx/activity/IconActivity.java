@@ -28,6 +28,9 @@ public class IconActivity extends AppCompatActivity {
     private FoxADXIconAd mFoxADXIconAd;
     private String userId;
     private int slotId;
+    /**
+     * 竞胜价格设置
+     */
     private int price =100;
     private FoxADXIconHolder adxIconHolder;
     private  FoxADXADBean mFoxADXADBean;
