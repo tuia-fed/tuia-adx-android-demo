@@ -25,6 +25,12 @@ import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 import com.mediamain.android.view.interfaces.FoxVideoListener;
 
+/**
+ * 请求广告             getAd()
+ * 获取竞价价格          getECPM();
+ * 设置竞胜价格展示广告   openAd()
+ * 销毁广告组件          destroy();
+ */
 public class FullScreenVideoActivity extends AppCompatActivity {
 
 
@@ -33,34 +39,25 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     FoxADXFullScreenVideoHolderImpl nativeIVideoHolder;
     private int slotId;
     private String userId;
-    private String mUrl;
     private int price = 100;
     private Activity mActivity;
     private final boolean isCached = true;
+    private FoxADXFullScreenVideoAd adxFullScreenVideoAd;
+    private FoxADXADBean mFoxADXADBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_video);
+        mActivity =this;
         if (getIntent() != null) {
             userId = getIntent().getStringExtra("userId");
             slotId = getIntent().getIntExtra("slotId", 0);
         }
-        mActivity =this;
-        findViewById(R.id.btnRequest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAd();
-            }
-        });
-        findViewById(R.id.btnShow).setOnClickListener(v -> {
-            openAd();
-        });
+        findViewById(R.id.btnRequest).setOnClickListener(v -> getAd());
+        findViewById(R.id.btnShow).setOnClickListener(v -> openAd());
     }
 
-
-    private FoxADXFullScreenVideoAd adxFullScreenVideoAd;
-    private FoxADXADBean mFoxADXADBean;
     private void getAd() {
         nativeIVideoHolder = (FoxADXFullScreenVideoHolderImpl) FoxNativeAdHelper.getADXFullScreenHolder();
         //默认缓存模式 可通过配置设置直接加载广告
@@ -72,6 +69,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                 if (foxADXFullScreenVideoAd != null) {
                     adxFullScreenVideoAd = foxADXFullScreenVideoAd;
                     mFoxADXADBean = foxADXFullScreenVideoAd.getFoxADXADBean();
+                    foxADXFullScreenVideoAd.getECPM();
                     //在线模式 可能因为网络原因播放卡顿
                     if (!isCached){
                         openAd();

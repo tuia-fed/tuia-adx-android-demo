@@ -14,6 +14,12 @@ import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenHolderImpl;
 import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
+/**
+ * 请求广告             getAd()
+ * 获取竞价价格          getECPM();
+ * 设置竞胜价格展示广告   openAd()
+ * 销毁广告组件          destroy();
+ */
 public class TabScreenActivity extends AppCompatActivity {
 
     private static final String TAG = TabScreenActivity.class.getSimpleName();
@@ -21,7 +27,6 @@ public class TabScreenActivity extends AppCompatActivity {
     FoxADXTabScreenHolderImpl tabScreenVideoHolder;
     private FoxADXADBean mFoxADXADBean;
     private FoxADXTabScreenAd mFoxADXTabScreenAd;
-    private FrameLayout mContainer;
     private int slotId;
     private String userId;
     private Activity activity;
@@ -40,10 +45,7 @@ public class TabScreenActivity extends AppCompatActivity {
         findViewById(R.id.btnRequest).setOnClickListener(v -> getAd());
         findViewById(R.id.btnShow).setOnClickListener(v -> {
             //缓存模式 先缓存本地视频 再播放不会卡顿
-            if (isCached && mFoxADXADBean!=null && mFoxADXTabScreenAd!=null){
-                mFoxADXADBean.setPrice(price);
-                mFoxADXTabScreenAd.openActivity(mFoxADXADBean);
-            }
+            openAD();
         });
     }
 

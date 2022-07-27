@@ -1,16 +1,9 @@
 package com.dt.adx.activity;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
-
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
@@ -18,11 +11,15 @@ import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.rewardvideo.FoxADXRewardVideoAd;
 import com.mediamain.android.adx.view.rewardvideo.FoxADXRewardVideoHolder;
 import com.mediamain.android.adx.view.rewardvideo.FoxADXRewardVideoHolderImpl;
-import com.mediamain.android.adx.view.rewardvideo.FoxADXRewardVideoView;
 import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
-import com.mediamain.android.view.interfaces.FoxVideoListener;
 
+/**
+ * 请求广告             getAd()
+ * 获取竞价价格          getECPM();
+ * 设置竞胜价格展示广告   openAd()
+ * 销毁广告组件          destroy();
+ */
 public class RewardVideoActivity extends AppCompatActivity {
 
     private static final String TAG = RewardVideoActivity.class.getSimpleName();
@@ -33,10 +30,6 @@ public class RewardVideoActivity extends AppCompatActivity {
     private String userId;
     private Activity mActivity;
     private FoxADXADBean mFoxADXADBean;
-    /**
-     * 竞价价格
-     * /分 
-     */
     private int price =100;
     private final boolean isCached = true;
 
@@ -54,9 +47,7 @@ public class RewardVideoActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btnShow).setOnClickListener(v -> {
-            if (isCached){
-                openAD();
-            }
+            openAD();
         });
     }
 
@@ -119,7 +110,7 @@ public class RewardVideoActivity extends AppCompatActivity {
             });
             //设置竞价胜出价格
             mFoxADXADBean.setPrice(price);
-            //打开全屏视频广告
+            //打开视频广告
             mFoxADXRewardVideoAd.openActivity(mFoxADXADBean);
         }else {
             FoxBaseToastUtils.showShort("等待广告请求成功。。。");
@@ -133,8 +124,14 @@ public class RewardVideoActivity extends AppCompatActivity {
         nativeIVideoHolder.loadAd(slotId, userId, new FoxADXRewardVideoHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXRewardVideoAd foxADXRewardVideoAd) {
+                if (foxADXRewardVideoAd == null || foxADXRewardVideoAd.getFoxADXADBean() == null){
+                    FoxBaseToastUtils.showShort("获取广告失败");
+                    return;
+                }
                 mFoxADXRewardVideoAd = foxADXRewardVideoAd;
                 mFoxADXADBean = foxADXRewardVideoAd.getFoxADXADBean();
+                //获取竞价价格
+                foxADXRewardVideoAd.getECPM();
                 Log.d(TAG, "onAdGetSuccess: ");
                 //在线模式 可能因为网络原因播放卡顿
                 if (!isCached){

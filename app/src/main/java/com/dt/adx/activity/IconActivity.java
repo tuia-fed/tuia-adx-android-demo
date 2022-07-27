@@ -1,28 +1,27 @@
 package com.dt.adx.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
-import com.mediamain.android.adx.view.banner.FoxADXBannerAd;
 import com.mediamain.android.adx.view.icon.FoxADXIconAd;
 import com.mediamain.android.adx.view.icon.FoxADXIconHolder;
 import com.mediamain.android.adx.view.icon.FoxADXIconView;
 import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
+/**
+ * 请求广告             getAd()
+ * 获取竞价价格          getECPM();
+ * 设置竞胜价格展示广告   openAd()
+ * 销毁广告组件          destroy();
+ */
 public class IconActivity extends AppCompatActivity {
 
     private static final String TAG = IconActivity.class.getSimpleName();
@@ -42,100 +41,108 @@ public class IconActivity extends AppCompatActivity {
              userId = getIntent().getStringExtra("userId");
              slotId = getIntent().getIntExtra("slotId", 0);
         }
-        adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
         findViewById(R.id.btnRequest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
-                    @Override
-                    public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
-                        Log.d(TAG, "onAdGetSuccess: ");
-                        mFoxADXIconAd = foxADXIconAd;
-                    }
-
-                    @Override
-                    public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
-                        Log.d(TAG, "onAdCacheSuccess: ");
-                        mFoxADXADBean = foxADXADBean;
-                    }
-
-                    @Override
-                    public void servingSuccessResponse(BidResponse bidResponse) {
-                        Log.d(TAG, "servingSuccessResponse: ");
-                        FoxBaseToastUtils.showShort("servingSuccessResponse: ");
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String errorBody) {
-                        Log.d(TAG, "onError: ");
-                        FoxBaseToastUtils.showShort("onError: "+errorCode+errorBody);
-                    }
-                });
+                getAd();
             }
         });
         findViewById(R.id.btnShow).setOnClickListener(v -> {
-            if (mFoxADXADBean!=null && mFoxADXIconAd!=null
-                    && mFoxADXIconAd.getView() instanceof FoxADXIconView){
-                mFoxADXIconView = (FoxADXIconView) mFoxADXIconAd.getView();
-                ViewGroup contentView = findViewById(android.R.id.content);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                contentView.removeAllViews();
-                contentView.addView(mFoxADXIconView, params);
-                mFoxADXADBean.setPrice(price);
-                mFoxADXIconView.setAdListener(new FoxADXIconAd.LoadAdInteractionListener() {
-                    @Override
-                    public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
-                        Log.d(TAG, "onAdGetSuccess: ");
-                    }
+           openAd();
+        });
+    }
 
-                    @Override
-                    public void onAdLoadFailed() {
-                        Log.d(TAG, "onAdLoadFailed: ");
-                    }
+    private void openAd() {
+        if (mFoxADXADBean!=null && mFoxADXIconAd!=null
+                && mFoxADXIconAd.getView() instanceof FoxADXIconView){
+            mFoxADXIconView = (FoxADXIconView) mFoxADXIconAd.getView();
+            ViewGroup contentView = findViewById(android.R.id.content);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            contentView.removeAllViews();
+            contentView.addView(mFoxADXIconView, params);
+            mFoxADXADBean.setPrice(price);
+            mFoxADXIconView.setAdListener(new FoxADXIconAd.LoadAdInteractionListener() {
+                @Override
+                public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
+                    Log.d(TAG, "onAdGetSuccess: ");
+                }
 
-                    @Override
-                    public void onAdLoadSuccess() {
-                        Log.d(TAG, "onAdLoadSuccess: ");
-                    }
+                @Override
+                public void onAdLoadFailed() {
+                    Log.d(TAG, "onAdLoadFailed: ");
+                }
 
-                    @Override
-                    public void onAdClick() {
-                        Log.d(TAG, "onAdClick: ");
-                    }
+                @Override
+                public void onAdLoadSuccess() {
+                    Log.d(TAG, "onAdLoadSuccess: ");
+                }
 
-                    @Override
-                    public void onAdExposure() {
-                        Log.d(TAG, "onAdExposure: ");
-                    }
+                @Override
+                public void onAdClick() {
+                    Log.d(TAG, "onAdClick: ");
+                }
 
-                    @Override
-                    public void onAdCloseClick() {
-                        Log.d(TAG, "onAdCloseClick: ");
-                    }
+                @Override
+                public void onAdExposure() {
+                    Log.d(TAG, "onAdExposure: ");
+                }
 
-                    @Override
-                    public void onAdActivityClose(String s) {
-                        Log.d(TAG, "onAdActivityClose: ");
-                    }
+                @Override
+                public void onAdCloseClick() {
+                    Log.d(TAG, "onAdCloseClick: ");
+                }
 
-                    @Override
-                    public void onAdMessage(MessageData messageData) {
-                        Log.d(TAG, "onAdMessage: ");
-                    }
+                @Override
+                public void onAdActivityClose(String s) {
+                    Log.d(TAG, "onAdActivityClose: ");
+                }
 
-                    @Override
-                    public void servingSuccessResponse(BidResponse bidResponse) {
-                        Log.d(TAG, "servingSuccessResponse: ");
-                    }
+                @Override
+                public void onAdMessage(MessageData messageData) {
+                    Log.d(TAG, "onAdMessage: ");
+                }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        Log.d(TAG, "onError: ");
-                    }
-                });
-                mFoxADXIconView.show(mFoxADXADBean);
+                @Override
+                public void servingSuccessResponse(BidResponse bidResponse) {
+                    Log.d(TAG, "servingSuccessResponse: ");
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    Log.d(TAG, "onError: ");
+                }
+            });
+            mFoxADXIconView.show(mFoxADXADBean);
+        }
+    }
+
+    private void getAd() {
+        adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
+        adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
+            @Override
+            public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
+                Log.d(TAG, "onAdGetSuccess: ");
+                mFoxADXIconAd = foxADXIconAd;
+            }
+
+            @Override
+            public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                Log.d(TAG, "onAdCacheSuccess: ");
+                mFoxADXADBean = foxADXADBean;
+            }
+
+            @Override
+            public void servingSuccessResponse(BidResponse bidResponse) {
+                Log.d(TAG, "servingSuccessResponse: ");
+                FoxBaseToastUtils.showShort("servingSuccessResponse: ");
+            }
+
+            @Override
+            public void onError(int errorCode, String errorBody) {
+                Log.d(TAG, "onError: ");
+                FoxBaseToastUtils.showShort("onError: "+errorCode+errorBody);
             }
         });
     }

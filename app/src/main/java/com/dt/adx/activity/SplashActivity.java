@@ -1,19 +1,13 @@
 package com.dt.adx.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
@@ -25,18 +19,21 @@ import com.mediamain.android.adx.view.splash.FoxADXSplashHolderImpl;
 import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
+/**
+ * 请求广告             getAd()
+ * 获取竞价价格          getECPM();
+ * 设置竞胜价格展示广告   openAd()
+ * 销毁广告组件          destroy();
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName()+"====";
 
-    private FrameLayout mContainer;
     private FoxADXSplashHolderImpl adxSplashHolder;
-    private FoxADXSplashHolder.LoadAdListener mSplashAdListener;
     private int slotId =  421090;
     private String userId;
     private FoxADXShView foxADXShView;
     private int price =100;
-    private FoxADXSplashAd mFoxADXSplashAd;
     private FoxADXADBean mFoxADXADBean;
     private final boolean isCached = true;
 
@@ -50,12 +47,7 @@ public class SplashActivity extends AppCompatActivity {
             slotId = getIntent().getIntExtra("slotId", 0);
         }
 
-        findViewById(R.id.btnRequest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAd();
-            }
-        });
+        findViewById(R.id.btnRequest).setOnClickListener(v -> getAd());
     }
 
 

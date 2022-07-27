@@ -17,6 +17,12 @@ import com.mediamain.android.adx.view.customer.FoxADXCustomerHolder;
 import com.mediamain.android.adx.view.customer.FoxADXCustomerTm;
 import com.mediamain.android.view.bean.MessageData;
 
+/**
+ * 请求广告             getAd()
+ * 获取竞价价格          getECPM();
+ * 设置竞胜价格展示广告   openAd()
+ * 销毁广告组件          destroy();
+ */
 public class CustomActivity extends AppCompatActivity {
 
     private static final String TAG = CustomActivity.class.getSimpleName();

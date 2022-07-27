@@ -16,14 +16,14 @@ public class MyApplication extends Application {
         FoxUserDataController userDataController = FoxUserDataController.getInstance();
         userDataController.setUserAgree(true);
         FoxConfig config = new FoxConfig.Builder()
-                .setAppId("89763")
+                .setAppId("40892")
                 .setVersion("1.0.0")
                 .setBundle("com.dt.adx")
                 .setName("测试")
-                .setAppKey("")
-                .setAppSecret("")
+                .setAppKey("23NMRAjuivG7pbkbd5fWdskaCShC")
+                .setAppSecret("3W7F3kBxfN9cpZ3PMKqtvQUzcrvMti5QEiyLSKq")
                 .setUserDataController(userDataController)
-                .setDebug(true)
+                .setDebug(false)
                 .build();
         FoxSDK.init(this,config);
     }
