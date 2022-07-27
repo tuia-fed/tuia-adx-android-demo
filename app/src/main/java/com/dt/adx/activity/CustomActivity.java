@@ -18,7 +18,15 @@ import com.mediamain.android.adx.view.customer.FoxADXCustomerTm;
 import com.mediamain.android.view.bean.MessageData;
 
 /**
- * 请求广告             getAd()
+ * 请求广告     getAd()
+ *     type：
+ *     banner类型广告:AD_TYPE_BANNER
+ *     开屏类型广告:AD_TYPE_SPLASH
+ *     弹窗类型广告:AD_TYPE_TAB_SCREEN
+ *     信息流类型广告:AD_TYPE_INFO_STREAM
+ *     激励视频类型广告:AD_TYPE_REWARD_VIDEO
+ *     icon类型广告:AD_TYPE_TEXT_ICON
+ *     全屏视频类型广告:AD_TYPE_FULL_SCREEN
  *
  * 获取竞价价格          getECPM();
  *
@@ -88,12 +96,13 @@ public class CustomActivity extends AppCompatActivity {
             @Override
             public void onError(int i, String s) {
                 Log.d(TAG, "onError: "+i+s);
+                FoxBaseToastUtils.showShort("onError"+i+s);
             }
 
             @Override
             public void onAdGetSuccess(Bid bid, BidAdm bidAdm) {
                 Log.d(TAG, "onAdGetSuccess: ");
-                FoxBaseToastUtils.showShort("onAdGetSuccess");
+                FoxBaseToastUtils.showShort("广告获取成功");
                 mBid = bid;
                 mBidAdm = bidAdm;
                 mOxCustomerTm.adExposed(mPrice);

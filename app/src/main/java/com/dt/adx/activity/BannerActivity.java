@@ -61,6 +61,7 @@ public class BannerActivity extends AppCompatActivity {
         adxBannerHolder.loadAd(BannerActivity.this, slotId, new FoxSize(738, 200, "738x200_mb"),new FoxADXBannerHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXBannerAd bannerAd) {
+                FoxBaseToastUtils.showShort("广告获取成功");
                 Log.d(TAG, "onAdGetSuccess: ");
                 mBannerAd = bannerAd;
                 bannerAd.getECPM();
@@ -68,6 +69,7 @@ public class BannerActivity extends AppCompatActivity {
 
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                FoxBaseToastUtils.showShort("广告缓存成功");
                 Log.d(TAG, "onAdCacheSuccess: ");
                 mFoxADXADBean = foxADXADBean;
             }

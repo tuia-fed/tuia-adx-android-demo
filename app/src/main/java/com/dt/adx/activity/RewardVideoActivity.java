@@ -136,6 +136,7 @@ public class RewardVideoActivity extends AppCompatActivity {
                 //获取竞价价格
                 foxADXRewardVideoAd.getECPM();
                 Log.d(TAG, "onAdGetSuccess: ");
+                FoxBaseToastUtils.showShort("获取广告成功");
                 //在线模式 可能因为网络原因播放卡顿
                 if (!isCached){
                     openAD();
@@ -145,6 +146,7 @@ public class RewardVideoActivity extends AppCompatActivity {
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
                 Log.d(TAG, "onAdCacheSuccess: ");
+                FoxBaseToastUtils.showShort("广告缓存成功");
                 //缓存模式 先缓存本地视频 再播放不会卡顿
                 mFoxADXADBean = foxADXADBean;
                 if (isCached){

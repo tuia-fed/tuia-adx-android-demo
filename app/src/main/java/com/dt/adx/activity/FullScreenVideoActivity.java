@@ -57,6 +57,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
             @Override
             public void onAdGetSuccess(FoxADXFullScreenVideoAd foxADXFullScreenVideoAd) {
                 Log.d(TAG, "onAdGetSuccess: ");
+                FoxBaseToastUtils.showShort("广告获取成功");
                 if (foxADXFullScreenVideoAd != null) {
                     adxFullScreenVideoAd = foxADXFullScreenVideoAd;
                     mFoxADXADBean = foxADXFullScreenVideoAd.getFoxADXADBean();
@@ -71,6 +72,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
                 Log.d(TAG, "onAdCacheSuccess: ");
+                FoxBaseToastUtils.showShort("广告缓存成功");
                 mFoxADXADBean = foxADXADBean;
                 //缓存模式 先缓存本地视频 再播放不会卡顿
                 if (isCached){
@@ -101,6 +103,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
             @Override
             public void onError(int errorCode, String errorBody) {
                 Log.d(TAG, "onError: "+errorCode+errorBody);
+                FoxBaseToastUtils.showShort("广告获取失败"+errorCode+errorBody);
             }
         });
     }

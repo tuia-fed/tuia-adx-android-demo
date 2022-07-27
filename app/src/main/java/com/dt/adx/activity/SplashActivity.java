@@ -67,10 +67,12 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onError(int code, String msg) {
                 Log.d(TAG, "onError: "+code+msg);
+                FoxBaseToastUtils.showShort("广告缓存失败 onError"+code+msg);
             }
 
             @Override
             public void onAdGetSuccess(FoxADXSplashAd foxADXSplashAd) {
+                FoxBaseToastUtils.showShort("广告获取成功");
                 if (foxADXSplashAd!=null){
                     Log.d(TAG, "onAdGetSuccess: "+ foxADXSplashAd.getECPM());
                     foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
@@ -85,6 +87,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                FoxBaseToastUtils.showShort("广告缓存成功");
                 Log.d(TAG, "onAdCacheSuccess: "+foxADXADBean.getRequestTid());
                 FoxBaseToastUtils.showShort("onAdCacheSuccess ");
                 mFoxADXADBean = foxADXADBean;

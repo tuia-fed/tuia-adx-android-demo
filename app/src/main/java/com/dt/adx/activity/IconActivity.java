@@ -123,15 +123,17 @@ public class IconActivity extends AppCompatActivity {
 
     private void getAd() {
         adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
-        adxIconHolder.loadAd(IconActivity.this, slotId, userId, 140, 140,  new FoxADXIconHolder.LoadAdListener() {
+        adxIconHolder.loadAd(IconActivity.this, slotId, userId, 70, 70,  new FoxADXIconHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
+                FoxBaseToastUtils.showShort("广告获取成功");
                 Log.d(TAG, "onAdGetSuccess: ");
                 mFoxADXIconAd = foxADXIconAd;
             }
 
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                FoxBaseToastUtils.showShort("广告缓存成功");
                 Log.d(TAG, "onAdCacheSuccess: ");
                 mFoxADXADBean = foxADXADBean;
             }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import com.dt.adx.R;
+import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenAd;
@@ -62,6 +63,7 @@ public class TabScreenActivity extends AppCompatActivity {
                     @Override
                     public void onError(int errorCode, String errorBody) {
                         Log.d(TAG, "onError: "+errorCode+errorBody);
+                        FoxBaseToastUtils.showShort("广告获取失败"+errorCode+errorBody);
                     }
 
                     @Override
@@ -71,6 +73,7 @@ public class TabScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onAdGetSuccess(FoxADXTabScreenAd foxADXTabScreenAd) {
+                        FoxBaseToastUtils.showShort("广告获取成功");
                         Log.d(TAG, "onAdGetSuccess: ");
                         if (foxADXTabScreenAd!=null){
                             mFoxADXTabScreenAd = foxADXTabScreenAd;
@@ -84,6 +87,7 @@ public class TabScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
+                        FoxBaseToastUtils.showShort("广告缓存成功");
                         Log.d(TAG, "onAdCacheSuccess: ");
                         mFoxADXADBean = foxADXADBean;
                         //缓存模式 先缓存本地视频 再播放不会卡顿
