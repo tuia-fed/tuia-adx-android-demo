@@ -58,7 +58,7 @@ public class BannerActivity extends AppCompatActivity {
 
     private void getAd() {
         adxBannerHolder = FoxNativeAdHelper.getADXBannerHolder();
-        adxBannerHolder.loadAd(BannerActivity.this, slotId, FoxSize.LANDER_TMBr,new FoxADXBannerHolder.LoadAdListener() {
+        adxBannerHolder.loadAd(BannerActivity.this, slotId, new FoxSize(738, 200, "738x200_mb"),new FoxADXBannerHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXBannerAd bannerAd) {
                 Log.d(TAG, "onAdGetSuccess: ");

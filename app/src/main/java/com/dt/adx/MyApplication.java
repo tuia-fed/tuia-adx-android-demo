@@ -13,6 +13,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        final int env = FoxBaseSPUtils.getInstance().getInt("env_config", AutoConfig.RELEASE);
+        AutoConfig.init(env);
         FoxUserDataController userDataController = FoxUserDataController.getInstance();
         userDataController.setUserAgree(true);
         /**

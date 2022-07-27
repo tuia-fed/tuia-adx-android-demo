@@ -112,7 +112,7 @@ public class CustomActivity extends AppCompatActivity {
                 Log.d(TAG, "onAdMessage: ");
             }
         });
-        mOxCustomerTm.loadAd(slotId,userId,FoxADXConstant.AD_TYPE_FULL_SCREEN);
+        mOxCustomerTm.loadAd(slotId,userId,FoxADXConstant.AD_TYPE_INFO_STREAM);
     }
 
     @Override

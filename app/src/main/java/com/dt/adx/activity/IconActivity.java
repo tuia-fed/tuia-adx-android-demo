@@ -123,7 +123,7 @@ public class IconActivity extends AppCompatActivity {
 
     private void getAd() {
         adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
-        adxIconHolder.loadAd(IconActivity.this, slotId, userId, 80, 80,  new FoxADXIconHolder.LoadAdListener() {
+        adxIconHolder.loadAd(IconActivity.this, slotId, userId, 140, 140,  new FoxADXIconHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
                 Log.d(TAG, "onAdGetSuccess: ");
