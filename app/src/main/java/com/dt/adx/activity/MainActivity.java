@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnCustom:
                 intent.setClass(this,CustomActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",399437);
+                intent.putExtra("slotId",423542);
                 break;
             default:
                 break;
