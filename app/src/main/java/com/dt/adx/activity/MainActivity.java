@@ -11,9 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.dt.adx.R;
-import com.mediamain.android.FoxSDK;
-import com.mediamain.android.base.config.FoxConfig;
-import com.mediamain.android.controller.FoxUserDataController;
 
 public class MainActivity extends AppCompatActivity {
 
