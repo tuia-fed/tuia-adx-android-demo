@@ -6,8 +6,8 @@ ext {
                suppotrSdkVersion: "28.0.0",
                minSdkVersion    : 21,
                targetSdkVersion : 26,
-               versionCode      : 3300,
-               versionName      : "3.3.0.0",
+               versionCode      : 3320,
+               versionName      : "3.3.2.0",
                applicationId    : "com.lechuan.midu.demo"
     ]
     dependencies = [// ###### android library  start ######

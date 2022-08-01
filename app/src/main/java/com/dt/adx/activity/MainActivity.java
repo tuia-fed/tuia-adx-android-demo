@@ -15,29 +15,6 @@ import com.mediamain.android.FoxSDK;
 import com.mediamain.android.base.config.FoxConfig;
 import com.mediamain.android.controller.FoxUserDataController;
 
-/**
- * 线上联调广告位位清单-后续可支持更换
- *
- * 计步首页广告位-开屏联调
- * 广告位ID:421090
- * 媒体id：89967
- *
- * 计步内页广告位—激励视频联调
- * ID:421089
- * 媒体id：89967
- *
- * 健康内页广告位—全屏视频联调
- * ID:419856
- * 媒体id：89763
- *
- * 健康首页广告位— 插屏联调
- * ID:419855
- * 媒体id：89763
- *
- * 走路内页广告位—原生信息流联调
- * ID:419307
- * 媒体id：89606
- */
 public class MainActivity extends AppCompatActivity {
 
     private static final String[] NEEDED_PERMISSIONS = new String[]{
