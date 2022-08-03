@@ -3,7 +3,9 @@ package com.dt.adx;
 import android.app.Application;
 import android.content.Context;
 import com.mediamain.android.FoxSDK;
+import com.mediamain.android.base.config.AutoConfig;
 import com.mediamain.android.base.config.FoxConfig;
+import com.mediamain.android.base.util.FoxBaseSPUtils;
 import com.mediamain.android.controller.FoxUserDataController;
 
 public class MyApplication extends Application {
@@ -15,7 +17,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //用户隐私政策同意之后调用 在广告初始化前主线程中初始化 请勿多次初始化  传入application的context
+        final int env = FoxBaseSPUtils.getInstance().getInt("env_config", AutoConfig.RELEASE);
+        AutoConfig.init(env);
         FoxUserDataController userDataController = FoxUserDataController.getInstance();
         //设备信息获取相关配置  默认获取 获取相关信息在对接文档上有列出  可通过userDataController.setOaid();等方法控制相关数据获取
         //设置获取的oaid  为了兼容oaid版本 允许媒体传入获取的oaid
