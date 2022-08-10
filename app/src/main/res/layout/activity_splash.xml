@@ -8,9 +8,23 @@
     tools:context=".activity.SplashActivity">
 
     <LinearLayout
+        android:padding="10dp"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_margin="10dp"
+            android:text="在线播放"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Switch
+            android:id="@+id/switch_play"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 
         <Button
             android:id="@+id/btnRequest"

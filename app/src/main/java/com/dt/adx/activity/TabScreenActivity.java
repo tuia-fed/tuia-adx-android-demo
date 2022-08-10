@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Switch;
+
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
@@ -35,7 +37,8 @@ public class TabScreenActivity extends AppCompatActivity {
      * 竞胜价格设置
      */
     private int price = 100;
-    private final boolean isCached = true;
+    private boolean isCached = true;
+    private Switch aSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +54,11 @@ public class TabScreenActivity extends AppCompatActivity {
             //缓存模式 先缓存本地视频 再播放不会卡顿
             openAD();
         });
+        aSwitch = findViewById(R.id.switch_play);
     }
 
     private void getAd() {
+        isCached = !aSwitch.isChecked();
         tabScreenVideoHolder = (FoxADXTabScreenHolderImpl) FoxNativeAdHelper.getADXTabScreenVideoHolder();
         //默认缓存模式 可通过配置设置直接加载广告
         tabScreenVideoHolder.setCached(isCached);

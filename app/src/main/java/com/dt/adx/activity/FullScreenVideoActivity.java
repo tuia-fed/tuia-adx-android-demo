@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Switch;
+
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
@@ -32,9 +34,10 @@ public class FullScreenVideoActivity extends AppCompatActivity {
      */
     private int price = 100;
     private Activity mActivity;
-    private final boolean isCached = true;
+    private boolean isCached = true;
     private FoxADXFullScreenVideoAd adxFullScreenVideoAd;
     private FoxADXADBean mFoxADXADBean;
+    private Switch aSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +50,11 @@ public class FullScreenVideoActivity extends AppCompatActivity {
         }
         findViewById(R.id.btnRequest).setOnClickListener(v -> getAd());
         findViewById(R.id.btnShow).setOnClickListener(v -> openAd());
+        aSwitch = findViewById(R.id.switch_play);
     }
 
     private void getAd() {
+        isCached = !aSwitch.isChecked();
         nativeIVideoHolder = (FoxADXFullScreenVideoHolderImpl) FoxNativeAdHelper.getADXFullScreenHolder();
         //默认缓存模式 可通过配置设置直接加载广告
         nativeIVideoHolder.setCached(isCached);

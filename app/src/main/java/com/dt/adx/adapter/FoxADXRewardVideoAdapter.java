@@ -1,13 +1,10 @@
-package com.dt.adx.activity;
+package com.dt.adx.adapter;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.Switch;
 
-import com.dt.adx.R;
+import com.anythink.rewardvideo.unitgroup.api.CustomRewardVideoAdapter;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
@@ -17,117 +14,80 @@ import com.mediamain.android.adx.view.rewardvideo.FoxADXRewardVideoHolderImpl;
 import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
-/**
- * 请求广告             getAd()
- * 获取竞价价格          getECPM();
- * 设置竞胜价格展示广告   openAd()
- * 销毁广告组件          destroy();
- */
-public class RewardVideoActivity extends AppCompatActivity {
+import java.util.Map;
 
-    private static final String TAG = RewardVideoActivity.class.getSimpleName();
+/**
+ * =================================================
+ * author : duibagroup
+ * date   : 2022/8/9
+ * desc   :
+ * =================================================
+ **/
+public class FoxADXRewardVideoAdapter extends CustomRewardVideoAdapter {
 
     FoxADXRewardVideoHolderImpl nativeIVideoHolder;
     private FoxADXRewardVideoAd mFoxADXRewardVideoAd;
-    private int slotId;
+    private int slotId = 423603;
     private String userId;
-    private Activity mActivity;
     private FoxADXADBean mFoxADXADBean;
-    /**
-     * 竞胜价格设置
-     */
-    private int price =100;
     private boolean isCached = true;
-    private Switch aSwitch;
+    private boolean isReady = false;
+    private int price =100;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reward_video);
-        mActivity =this;
-        if (getIntent() != null) {
-            userId = getIntent().getStringExtra("userId");
-            slotId = getIntent().getIntExtra("slotId", 0);
-        }
-        findViewById(R.id.btnRequest).setOnClickListener(v -> {
-            getAd();
-        });
-
-        findViewById(R.id.btnShow).setOnClickListener(v -> {
-            openAD();
-        });
-        aSwitch = findViewById(R.id.switch_play);
-    }
-
-    private void openAD() {
-        if (mFoxADXADBean!=null && mFoxADXRewardVideoAd!=null){
+    public void show(Activity activity) {
+        if (isReady && mFoxADXADBean!=null && mFoxADXRewardVideoAd!=null){
             mFoxADXRewardVideoAd.setLoadVideoAdInteractionListener(new FoxADXRewardVideoAd.LoadVideoAdInteractionListener() {
                 @Override
                 public void onAdLoadFailed() {
-                    Log.d(TAG, "onAdLoadFailed: ");
                 }
 
                 @Override
                 public void onAdLoadSuccess() {
-                    Log.d(TAG, "onAdLoadSuccess: ");
                 }
 
                 @Override
                 public void onAdClick() {
-                    Log.d(TAG, "onAdClick: ");
-
                 }
 
                 @Override
                 public void onAdExposure() {
-                    Log.d(TAG, "onAdExposure: ");
-
                 }
 
                 @Override
                 public void onAdTimeOut() {
-                    Log.d(TAG, "onAdTimeOut: ");
                 }
 
                 @Override
                 public void onAdJumpClick() {
-                    Log.d(TAG, "onAdJumpClick: ");
                 }
 
                 @Override
                 public void onAdReward(boolean isReward) {
-                    Log.d(TAG, "onAdReward: =="+isReward);
-
                 }
 
                 @Override
                 public void onAdCloseClick() {
-                    Log.d(TAG, "onAdCloseClick: ");
-
                 }
 
                 @Override
                 public void onAdActivityClose(String data) {
-                    Log.d(TAG, "onAdActivityClose: ");
                 }
 
                 @Override
                 public void onAdMessage(MessageData data) {
-                    Log.d(TAG, "onAdMessage: ");
                 }
             });
             //设置竞价胜出价格
             mFoxADXADBean.setPrice(price);
             //打开视频广告
             mFoxADXRewardVideoAd.openActivity(mFoxADXADBean);
-        }else {
-            FoxBaseToastUtils.showShort("等待广告请求成功。。。");
         }
     }
 
-    private void getAd() {
-        isCached = !aSwitch.isChecked();
-        nativeIVideoHolder = (FoxADXRewardVideoHolderImpl) FoxNativeAdHelper.getADXRewardVideoHolder();
+    @Override
+    public void loadCustomNetworkAd(Context context, Map<String, Object> map, Map<String, Object> map1) {
+        FoxADXRewardVideoHolderImpl nativeIVideoHolder = (FoxADXRewardVideoHolderImpl) FoxNativeAdHelper.getADXRewardVideoHolder();
         //默认缓存模式 可通过配置设置直接加载广告
         nativeIVideoHolder.setCached(isCached);
         nativeIVideoHolder.loadAd(slotId, userId, new FoxADXRewardVideoHolder.LoadAdListener() {
@@ -141,57 +101,62 @@ public class RewardVideoActivity extends AppCompatActivity {
                 mFoxADXADBean = foxADXRewardVideoAd.getFoxADXADBean();
                 //获取竞价价格
                 foxADXRewardVideoAd.getECPM();
-                Log.d(TAG, "onAdGetSuccess: ");
-                FoxBaseToastUtils.showShort("获取广告成功");
-                //在线模式 可能因为网络原因播放卡顿
-                if (!isCached){
-                    openAD();
-                }
             }
 
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
-                Log.d(TAG, "onAdCacheSuccess: ");
                 FoxBaseToastUtils.showShort("广告缓存成功");
                 //缓存模式 先缓存本地视频 再播放不会卡顿
                 mFoxADXADBean = foxADXADBean;
-                if (isCached){
-                    openAD();
-                }
+                isReady = true;
             }
 
             @Override
             public void onAdCacheCancel(String id) {
-                Log.d(TAG, "onAdCacheCancel: ");
             }
 
             @Override
             public void onAdCacheFail(String id) {
-                Log.d(TAG, "onAdCacheFail: ");
             }
 
             @Override
             public void onAdCacheEnd(String id) {
-                Log.d(TAG, "onAdCacheEnd: ");
             }
 
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
-                Log.d(TAG, "servingSuccessResponse: ");
             }
 
             @Override
             public void onError(int errorCode, String errorBody) {
-                FoxBaseToastUtils.showShort(mActivity,"onError "+errorCode+errorBody);
             }
         });
     }
 
     @Override
-    protected void onDestroy() {
+    public void destory() {
         if (nativeIVideoHolder != null) {
             nativeIVideoHolder.destroy();
         }
-        super.onDestroy();
+    }
+
+    @Override
+    public String getNetworkPlacementId() {
+        return String.valueOf(slotId);
+    }
+
+    @Override
+    public String getNetworkSDKVersion() {
+        return "3.3.3.0";
+    }
+
+    @Override
+    public String getNetworkName() {
+        return "tuia";
+    }
+
+    @Override
+    public boolean isAdReady() {
+        return isReady;
     }
 }

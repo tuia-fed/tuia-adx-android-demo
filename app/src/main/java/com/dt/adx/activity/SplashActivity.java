@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
+
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.adx.base.FoxADXADBean;
@@ -38,7 +40,8 @@ public class SplashActivity extends AppCompatActivity {
      */
     private int price =100;
     private FoxADXADBean mFoxADXADBean;
-    private final boolean isCached = true;
+    private boolean isCached = true;
+    private Switch aSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +54,12 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.btnRequest).setOnClickListener(v -> getAd());
+        aSwitch = findViewById(R.id.switch_play);
     }
 
 
     private void getAd() {
+        isCached = !aSwitch.isChecked();
         adxSplashHolder = (FoxADXSplashHolderImpl) FoxNativeAdHelper.getADXSplashHolder();
         //控制是否需要缓存广告  true 会走onAdGetSuccess()和onAdCacheSuccess()回调接口  false 只会走onAdGetSuccess()
         adxSplashHolder.setCached(isCached);

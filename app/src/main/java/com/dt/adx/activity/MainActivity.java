@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.dt.adx.R;
+import com.mediamain.android.FoxSDK;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,22 +57,22 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnReward:
                 intent.setClass(this,RewardVideoActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",393342);
+                intent.putExtra("slotId",423603);
                 break;
             case R.id.btnFullScreen:
                 intent.setClass(this,FullScreenVideoActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",393341);
+                intent.putExtra("slotId",423605);
                 break;
             case R.id.btnSplash:
                 intent.setClass(this,SplashActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421490);
+                intent.putExtra("slotId",423601);
                 break;
             case R.id.btnTabScreen:
                 intent.setClass(this,TabScreenActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421494);
+                intent.putExtra("slotId",423606);
                 break;
             case R.id.btnBanner:
                 intent.setClass(this,BannerActivity.class);
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnCustom:
                 intent.setClass(this,CustomActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",423558);
+                intent.putExtra("slotId",423602);
                 break;
             default:
                 break;
