@@ -23,6 +23,7 @@ import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.dt.adx.widget.ILoadMoreListener;
 import com.dt.adx.widget.LoadMoreListView;
+import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedAd;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedHolder;
@@ -202,6 +203,10 @@ public class NativeListFeedListActivity extends Activity {
 
         private static final int ITEM_VIEW_TYPE_NORMAL = 0;
         private static final int ITEM_VIEW_TYPE_AD = 1;
+        /**
+         * 竞胜价格
+         */
+        private int price = 100;
 
         private List<IFoxADXTemInfoFeedAd> mData;
         private Context mContext;
@@ -264,6 +269,10 @@ public class NativeListFeedListActivity extends Activity {
                 normalViewHolder = (AdViewHolder) convertView.getTag();
             }
             IFoxADXTemInfoFeedAd tempAd = getItem(position);
+            FoxADXADBean foxADXADBean = tempAd.getFoxADXADBean();
+            if (foxADXADBean!=null){
+                foxADXADBean.setPrice(price);
+            }
             if (tempAd!=null){
                 View view = tempAd.getView();
                 if (view!=null){

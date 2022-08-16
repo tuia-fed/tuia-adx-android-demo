@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.FoxSDK;
+import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedAd;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedHolder;
@@ -50,6 +52,7 @@ public class RecyclerFeedListActivity extends Activity {
     private static final int LIST_ITEM_COUNT = 30;
     private RecyclerView mRecyclerView;
     private SmartRefreshLayout refreshLayout;
+    private Switch textSwitch;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private String userId;
     private int slotId;
@@ -70,6 +73,7 @@ public class RecyclerFeedListActivity extends Activity {
     }
 
     private void initView() {
+        textSwitch = findViewById(R.id.textSwitch);
         refreshLayout = findViewById(R.id.refreshLayout);
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -116,7 +120,7 @@ public class RecyclerFeedListActivity extends Activity {
     List<IFoxADXTemInfoFeedAd> mFoxInfoAds=new ArrayList<>();
     private void requestAd(long posId, int width) {
         FoxADXTemInfoFeedHolder adxInfoStreamHolder = FoxNativeAdHelper.getFoxADXTemInfoFeedHolder();
-        adxInfoStreamHolder.loadAd(this, slotId, userId, FoxADXTemInfoFeedAd.ITEM_VIEW_TYPE_BOTTOM_IMG_VIDEO, new FoxADXTemInfoFeedHolder.LoadAdListener() {
+        adxInfoStreamHolder.loadAd(this, slotId, userId,textSwitch.isChecked()? FoxADXTemInfoFeedAd.ITEM_VIEW_TYPE_TOP_IMG_VIDEO:FoxADXTemInfoFeedAd.ITEM_VIEW_TYPE_BOTTOM_IMG_VIDEO, new FoxADXTemInfoFeedHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(List<IFoxADXTemInfoFeedAd> foxInfoAds) {
                 FoxBaseToastUtils.showShort("获取广告成功");
@@ -162,6 +166,10 @@ public class RecyclerFeedListActivity extends Activity {
     private static class FeedRecyclerAdapter extends RecyclerView.Adapter {
         private Context mContext;
         private List<IFoxADXTemInfoFeedAd> mDataList;
+        /**
+         * 竞胜价格
+         */
+        private int price = 100;
 
         FeedRecyclerAdapter(Context context, List<IFoxADXTemInfoFeedAd> dataList) {
             this.mContext = context;
@@ -197,6 +205,10 @@ public class RecyclerFeedListActivity extends Activity {
                     tempAd.setRepeatMode(Player.REPEAT_MODE_ONE);
                     tempAd.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
                     tempAd.setAdBackground(FoxSDK.getContext().getDrawable(R.drawable.recy_shape));
+                    FoxADXADBean foxADXADBean = tempAd.getFoxADXADBean();
+                    if (foxADXADBean!=null){
+                        foxADXADBean.setPrice(price);
+                    }
                     View view = tempAd.getView();
                     if (view!=null){
                         if (tempAd.getView().getParent() instanceof ViewGroup) {
