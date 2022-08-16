@@ -20,6 +20,12 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:name=".activity.NativeListFeedListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.RecyclerFeedListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.TabScreenActivity"
             android:exported="false" />
         <activity

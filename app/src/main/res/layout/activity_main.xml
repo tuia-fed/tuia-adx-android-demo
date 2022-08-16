@@ -75,6 +75,29 @@
         tools:ignore="HardcodedText,RtlHardcoded" />
 
     <Button
+        android:id="@+id/btnNativeRecycler"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="信息流-recyclerview"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btnNativeList"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="信息流-listview"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
+
+    <Button
         android:id="@+id/btnCustom"
         android:textColor="@android:color/black"
         android:layout_width="match_parent"

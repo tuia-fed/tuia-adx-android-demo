@@ -6,9 +6,9 @@ ext {
                suppotrSdkVersion: "28.0.0",
                minSdkVersion    : 21,
                targetSdkVersion : 26,
-               versionCode      : 3320,
-               versionName      : "3.3.2.0",
-               applicationId    : "com.lechuan.midu.demo"
+               versionCode      : 3330,
+               versionName      : "3.3.3.0",
+               applicationId    : "com.dt.adx"
     ]
     dependencies = [// ###### android library  start ######
                     "multidex"                 : "com.android.support:multidex:1.0.3",

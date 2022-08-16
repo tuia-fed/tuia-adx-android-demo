@@ -83,6 +83,16 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userId","test-1");
                 intent.putExtra("slotId",399517);
                 break;
+            case R.id.btnNativeRecycler:
+                intent.setClass(this,RecyclerFeedListActivity.class);
+                intent.putExtra("userId","test-1");
+                intent.putExtra("slotId",423558);
+                break;
+            case R.id.btnNativeList:
+                intent.setClass(this,NativeListFeedListActivity.class);
+                intent.putExtra("userId","test-1");
+                intent.putExtra("slotId",423558);
+                break;
             case R.id.btnCustom:
                 intent.setClass(this,CustomActivity.class);
                 intent.putExtra("userId","test-1");
