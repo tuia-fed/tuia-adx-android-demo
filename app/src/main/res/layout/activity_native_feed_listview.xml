@@ -9,30 +9,18 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:hint="Appkey"
-            android:id="@+id/editAppkey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:hint="AppSecret"
-            android:id="@+id/editAppSecret"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
             android:hint="广告id"
             android:id="@+id/editAdSlotid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
-            android:hint="图片宽度（单位：dp）"
+            android:hint="宽度（单位：dp）"
             android:id="@+id/editAdImageWidth"
             android:layout_width="200dp"
             android:layout_height="wrap_content" />
         <EditText
-            android:hint="图片高度（单位：dp）"
+            android:hint="高度（单位：dp）"
             android:id="@+id/editAdImageHeight"
             android:layout_width="200dp"
             android:layout_height="wrap_content" />

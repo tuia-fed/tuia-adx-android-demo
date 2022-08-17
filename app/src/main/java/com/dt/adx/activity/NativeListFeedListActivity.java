@@ -35,6 +35,9 @@ import java.util.List;
 
 /**
  * 信息流Demo（ListView 模板渲染：支持开发者进行微调）
+ *
+ * IFoxADXTemInfoFeedAd
+ *
  */
 @SuppressWarnings("ALL")
 public class NativeListFeedListActivity extends Activity {
@@ -62,8 +65,6 @@ public class NativeListFeedListActivity extends Activity {
         setContentView(R.layout.activity_native_feed_listview);
         mFoxTempletInfoFeedHolder = FoxNativeAdHelper.getFoxADXTemInfoFeedHolder();
         registerReceiver(receiver, new IntentFilter("broadsend.action"));
-        final EditText editAppkey = (EditText) findViewById(R.id.editAppkey);
-        final EditText editAppSecret = (EditText) findViewById(R.id.editAppSecret);
         final EditText editAdSlotid = (EditText) findViewById(R.id.editAdSlotid);
         editAdImagewidth = (EditText) findViewById(R.id.editAdImageWidth);
         editAdImageHeight = (EditText) findViewById(R.id.editAdImageHeight);
@@ -87,8 +88,6 @@ public class NativeListFeedListActivity extends Activity {
                     }
 
                     mListView.setVisibility(View.VISIBLE);
-                    String appKey = editAppkey.getText().toString().trim();
-                    String appSecret = editAppSecret.getText().toString().trim();
                     final String mSlotId = editAdSlotid.getText().toString().trim();
                     if (!TextUtils.isEmpty(mSlotId)) {
                         slotId = Integer.parseInt(mSlotId);

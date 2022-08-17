@@ -56,21 +56,12 @@ public class IconActivity extends AppCompatActivity {
     }
 
     private void openAd() {
-        if (mFoxADXADBean!=null && mFoxADXIconAd!=null
-                && mFoxADXIconAd.getView() instanceof FoxADXIconView){
+        if (mFoxADXADBean!=null && mFoxADXIconAd!=null && mFoxADXIconAd.getView() instanceof FoxADXIconView){
             mFoxADXIconView = (FoxADXIconView) mFoxADXIconAd.getView();
-            ViewGroup contentView = findViewById(android.R.id.content);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-            contentView.removeAllViews();
-            contentView.addView(mFoxADXIconView, params);
-            mFoxADXADBean.setPrice(price);
-            mFoxADXIconView.setAdListener(new FoxADXIconAd.LoadAdInteractionListener() {
-                @Override
-                public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
-                    Log.d(TAG, "onAdGetSuccess: ");
-                }
+            if (mFoxADXIconAd.getFoxADXADBean()!=null){
+                mFoxADXIconAd.getFoxADXADBean().setPrice(price);
+            }
+            mFoxADXIconAd.setLoadAdInteractionListener(new FoxADXIconAd.LoadAdInteractionListener() {
 
                 @Override
                 public void onAdLoadFailed() {
@@ -107,23 +98,16 @@ public class IconActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
 
-                @Override
-                public void servingSuccessResponse(BidResponse bidResponse) {
-                    Log.d(TAG, "servingSuccessResponse: ");
-                }
-
-                @Override
-                public void onError(int i, String s) {
-                    Log.d(TAG, "onError: ");
-                }
             });
-            mFoxADXIconView.show(mFoxADXADBean);
+            ViewGroup contentView = findViewById(R.id.container);
+            contentView.removeAllViews();
+            contentView.addView(mFoxADXIconView);
         }
     }
 
     private void getAd() {
         adxIconHolder = FoxNativeAdHelper.getADXIconHolder();
-        adxIconHolder.loadAd(IconActivity.this, slotId, userId, 50, 50,  new FoxADXIconHolder.LoadAdListener() {
+        adxIconHolder.loadAd(IconActivity.this, slotId, userId, 0, 0,  new FoxADXIconHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXIconAd foxADXIconAd) {
                 FoxBaseToastUtils.showShort("广告获取成功");

@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 信息流Demo（RecyclerView模版渲染）
+ * 信息流Demo（RecyclerView模版渲染：支持开发者进行微调）
  */
 @SuppressWarnings("ALL")
 public class RecyclerFeedListActivity extends Activity {
@@ -103,6 +103,8 @@ public class RecyclerFeedListActivity extends Activity {
         findViewById(R.id.btnGet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFeedList.clear();
+                mFeedRecyclerAdapter.notifyDataSetChanged();
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -111,7 +113,7 @@ public class RecyclerFeedListActivity extends Activity {
                             requestAd(mPosId, width);
                         }
                     }
-                }, 500);
+                }, 200);
             }
         });
     }
@@ -203,7 +205,7 @@ public class RecyclerFeedListActivity extends Activity {
                     tempAd.setTextSize(16);
                     tempAd.setAutoPlay(false);
                     tempAd.setRepeatMode(Player.REPEAT_MODE_ONE);
-                    tempAd.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+                    tempAd.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
                     tempAd.setAdBackground(FoxSDK.getContext().getDrawable(R.drawable.recy_shape));
                     FoxADXADBean foxADXADBean = tempAd.getFoxADXADBean();
                     if (foxADXADBean!=null){

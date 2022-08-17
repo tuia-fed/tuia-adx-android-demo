@@ -92,13 +92,10 @@ public class BannerActivity extends AppCompatActivity {
     private void openAd() {
         if (mBannerAd!=null &&  mBannerAd.getView() instanceof FoxADXBannerView ){
             mFoxADXBannerView = (FoxADXBannerView) mBannerAd.getView();
-            container.removeAllViews();
-            container.addView(mFoxADXBannerView);
-            mFoxADXBannerView.setAdListener(new FoxADXBannerAd.LoadAdInteractionListener() {
-                @Override
-                public void onAdGetSuccess(FoxADXBannerAd foxADXBannerAd) {
-                    Log.d(TAG, "onAdGetSuccess: ");
-                }
+            if (mBannerAd.getFoxADXADBean()!=null){
+                mBannerAd.getFoxADXADBean().setPrice(price);
+            }
+            mBannerAd.setLoadAdInteractionListener(new FoxADXBannerAd.LoadAdInteractionListener() {
 
                 @Override
                 public void onAdLoadFailed() {
@@ -135,20 +132,9 @@ public class BannerActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
 
-                @Override
-                public void servingSuccessResponse(BidResponse bidResponse) {
-                    Log.d(TAG, "servingSuccessResponse: ");
-                }
-
-                @Override
-                public void onError(int i, String s) {
-                    Log.d(TAG, "onError: ");
-                }
             });
-            if (mFoxADXADBean!=null){
-                mFoxADXADBean.setPrice(price);
-            }
-            mFoxADXBannerView.show(mFoxADXADBean);
+            container.removeAllViews();
+            container.addView(mFoxADXBannerView);
         }
     }
 
