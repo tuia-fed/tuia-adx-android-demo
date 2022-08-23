@@ -52,7 +52,6 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs/jni']
-            res.srcDirs += 'topon_res'
         }
     }
 
@@ -63,11 +62,9 @@ android {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar','*.aar'], dir: 'libs/topon_libs')
     api files('libs/oaid_sdk_1.0.25.aar')
-    api 'com.tuia.android:adx:3.3.2.3'
+    api 'com.tuia.android:adx:3.3.4.0-SNAPSHOT'
     api rootProject.ext.dependencies["constraintLayout"]
     api rootProject.ext.dependencies["appcompat-v7"]
-    api rootProject.ext.dependencies["localbroadcastmanager"]
     api rootProject.ext.dependencies["design"]
 }
