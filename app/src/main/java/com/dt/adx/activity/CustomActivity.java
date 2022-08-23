@@ -13,9 +13,12 @@ import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.Bid;
 import com.mediamain.android.adx.response.BidAdm;
 import com.mediamain.android.adx.response.BidResponse;
+import com.mediamain.android.adx.view.custom.FoxADXCustomAd;
+import com.mediamain.android.adx.view.custom.FoxADXCustomInfoHolder;
 import com.mediamain.android.adx.view.customer.FoxADXCustomerHolder;
 import com.mediamain.android.adx.view.customer.FoxADXCustomerTm;
 import com.mediamain.android.view.bean.MessageData;
+import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
 /**
  * 请求广告     getAd()
@@ -29,11 +32,13 @@ import com.mediamain.android.view.bean.MessageData;
  *     全屏视频类型广告:AD_TYPE_FULL_SCREEN
  *
  * 获取竞价价格          getECPM();
+ * 设置竞胜价格          foxADXCustomAd.setWinPrice(FoxADXConstant.PlatFrom.FROM_TUIA,mPrice, FoxADXConstant.CURRENCY.RMB);
+ * 广告展示及曝光        mFoxADXCustomAd.adExposed();
  *
- * 广告展示及曝光        mOxCustomerTm.adExposed(mPrice);
+ * 设置竞胜价格点击广告   mFoxADXCustomAd.adClicked();
+ *                     mFoxADXCustomAd.openFoxActivity(mBid.getDurl());
  *
- * 设置竞胜价格点击广告   mOxCustomerTm.adClicked(mPrice);
- *                     mOxCustomerTm.openFoxActivity(mBid.getDurl());
+ * 广告竞价失败的时候也调用下把胜出价格回传 mFoxADXCustomAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
  *
  * 销毁广告组件          destroy();
  */
@@ -41,7 +46,6 @@ public class CustomActivity extends AppCompatActivity {
 
     private static final String TAG = CustomActivity.class.getSimpleName();
 
-    private FoxADXCustomerTm mOxCustomerTm;
     private TextView textView;
     private String userId;
     private int slotId;
@@ -54,9 +58,11 @@ public class CustomActivity extends AppCompatActivity {
      */
     private BidAdm mBidAdm;
     /**
-     * 竞胜价格
+     * 竞胜价格 分/每千次
      */
     private int mPrice;
+
+    private FoxADXCustomAd mFoxADXCustomAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,61 +79,63 @@ public class CustomActivity extends AppCompatActivity {
         textView.setOnClickListener(v -> {
            openAd();
         });
-        mOxCustomerTm = new FoxADXCustomerTm(this);
     }
 
     private void openAd() {
-        if (mOxCustomerTm != null && mBid != null
+        if (mFoxADXCustomAd != null && mBid != null
                 && !TextUtils.isEmpty(mBid.getDurl())) {
-            mOxCustomerTm.adClicked(mPrice);
-            mOxCustomerTm.openFoxActivity(mBid.getDurl());
+            mFoxADXCustomAd.onAdClick();
+            mFoxADXCustomAd.openActivity(mBid.getDurl());
         }
     }
 
+
     private void getAd() {
-        mOxCustomerTm.setAdListener(new FoxADXCustomerHolder.LoadAdListener() {
+        FoxADXCustomInfoHolder customerInfoHolder = FoxNativeAdHelper.getCustomerInfoHolder();
+        customerInfoHolder.loadAd(slotId, userId, FoxADXConstant.AD_TYPE_REWARD_VIDEO, new FoxADXCustomInfoHolder.LoadAdListener() {
             @Override
             public void servingSuccessResponse(BidResponse bidResponse) {
-                Log.d(TAG, "servingSuccessResponse: ");
-                FoxBaseToastUtils.showShort(getApplicationContext(), "广告请求成功");
-                textView.setText(bidResponse.toString());
+
             }
 
             @Override
-            public void onError(int i, String s) {
-                Log.d(TAG, "onError: "+i+s);
-                FoxBaseToastUtils.showShort("onError"+i+s);
+            public void onError(int errorCode, String errorBody) {
+
             }
 
             @Override
-            public void onAdGetSuccess(Bid bid, BidAdm bidAdm) {
-                Log.d(TAG, "onAdGetSuccess: ");
-                FoxBaseToastUtils.showShort("广告获取成功");
-                mBid = bid;
-                mBidAdm = bidAdm;
-                mOxCustomerTm.adExposed(mPrice);
+            public void onAdGetSuccess(FoxADXCustomAd foxADXCustomAd) {
+                mFoxADXCustomAd =  foxADXCustomAd;
+                mBid = foxADXCustomAd.getBid();
+                mPrice = foxADXCustomAd.getECPM();
+                foxADXCustomAd.setWinPrice(FoxADXConstant.PlatFrom.FROM_TUIA,mPrice, FoxADXConstant.CURRENCY.RMB);
+                foxADXCustomAd.onAdExposure();
                 if (textView!=null){
                     textView.setText(mBid.toString());
                 }
             }
 
             @Override
-            public void onAdActivityClose(String s) {
-                Log.d(TAG, "onAdActivityClose: ");
+            public void onAdGetSuccess(Bid bid, BidAdm bidAdm) {
+
             }
 
             @Override
-            public void onAdMessage(MessageData messageData) {
-                Log.d(TAG, "onAdMessage: ");
+            public void onAdActivityClose(String msg) {
+
+            }
+
+            @Override
+            public void onAdMessage(MessageData data) {
+
             }
         });
-        mOxCustomerTm.loadAd(slotId,userId,FoxADXConstant.AD_TYPE_INFO_STREAM);
     }
 
     @Override
     protected void onDestroy() {
-        if (mOxCustomerTm != null) {
-            mOxCustomerTm.destroy();
+        if (mFoxADXCustomAd != null) {
+            mFoxADXCustomAd.destroy();
         }
         super.onDestroy();
     }

@@ -9,6 +9,7 @@ import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.banner.FoxADXBannerAd;
 import com.mediamain.android.adx.view.banner.FoxADXBannerHolder;
@@ -21,6 +22,7 @@ import com.mediamain.android.view.holder.FoxNativeAdHelper;
  * 请求广告             getAd()
  * 获取竞价价格          getECPM();
  * 设置竞胜价格展示广告   openAd()
+ * 广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
  * 销毁广告组件          destroy();
  */
 public class BannerActivity extends AppCompatActivity {
@@ -32,11 +34,10 @@ public class BannerActivity extends AppCompatActivity {
     private int slotId;
     private FoxADXBannerAd mBannerAd;
     /**
-     * 竞胜价格设置
+     * 竞胜价格 分/每千次
      */
-    private int price =100;
+    private int mPrice;
     private  FoxADXBannerHolder adxBannerHolder;
-    private  FoxADXADBean mFoxADXADBean;
     private FoxADXBannerView mFoxADXBannerView;
 
     @Override
@@ -64,14 +65,13 @@ public class BannerActivity extends AppCompatActivity {
                 FoxBaseToastUtils.showShort("广告获取成功");
                 Log.d(TAG, "onAdGetSuccess: ");
                 mBannerAd = bannerAd;
-                bannerAd.getECPM();
+                mPrice = bannerAd.getECPM();
             }
 
             @Override
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
                 FoxBaseToastUtils.showShort("广告缓存成功");
                 Log.d(TAG, "onAdCacheSuccess: ");
-                mFoxADXADBean = foxADXADBean;
             }
 
             @Override
@@ -92,9 +92,7 @@ public class BannerActivity extends AppCompatActivity {
     private void openAd() {
         if (mBannerAd!=null &&  mBannerAd.getView() instanceof FoxADXBannerView ){
             mFoxADXBannerView = (FoxADXBannerView) mBannerAd.getView();
-            if (mBannerAd.getFoxADXADBean()!=null){
-                mBannerAd.getFoxADXADBean().setPrice(price);
-            }
+            mBannerAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
             mBannerAd.setLoadAdInteractionListener(new FoxADXBannerAd.LoadAdInteractionListener() {
 
                 @Override

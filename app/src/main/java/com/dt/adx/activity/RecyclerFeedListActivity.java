@@ -22,6 +22,7 @@ import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedAd;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedHolder;
@@ -42,7 +43,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 信息流Demo（RecyclerView模版渲染：支持开发者进行微调）
+ *  信息流Demo（RecyclerView模版渲染：支持开发者进行微调）
+ *
+ *  请求广告             getAd()
+ *  获取竞价价格          getECPM();
+ *  设置竞胜价格展示广告   openAd()
+ *  广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
+ *  销毁广告组件          destroy();
  */
 @SuppressWarnings("ALL")
 public class RecyclerFeedListActivity extends Activity {
@@ -171,7 +178,7 @@ public class RecyclerFeedListActivity extends Activity {
         /**
          * 竞胜价格
          */
-        private int price = 100;
+        private int price;
 
         FeedRecyclerAdapter(Context context, List<IFoxADXTemInfoFeedAd> dataList) {
             this.mContext = context;
@@ -200,6 +207,7 @@ public class RecyclerFeedListActivity extends Activity {
                 AdViewHolder adViewHolder = (AdViewHolder) viewHolder;
                 IFoxADXTemInfoFeedAd tempAd = mDataList.get(position);
                 if (tempAd!=null){
+                    price = tempAd.getECPM();
                     tempAd.setMargin(0,10,0,10);
                     tempAd.setVideoSoundEnable(true);
                     tempAd.setTextSize(16);
@@ -207,10 +215,8 @@ public class RecyclerFeedListActivity extends Activity {
                     tempAd.setRepeatMode(Player.REPEAT_MODE_ONE);
                     tempAd.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
                     tempAd.setAdBackground(FoxSDK.getContext().getDrawable(R.drawable.recy_shape));
-                    FoxADXADBean foxADXADBean = tempAd.getFoxADXADBean();
-                    if (foxADXADBean!=null){
-                        foxADXADBean.setPrice(price);
-                    }
+                    //设置竞胜价格
+                    tempAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
                     View view = tempAd.getView();
                     if (view!=null){
                         if (tempAd.getView().getParent() instanceof ViewGroup) {

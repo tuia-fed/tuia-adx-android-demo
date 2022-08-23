@@ -23,7 +23,9 @@ import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.dt.adx.widget.ILoadMoreListener;
 import com.dt.adx.widget.LoadMoreListView;
+import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedAd;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedHolder;
@@ -36,8 +38,11 @@ import java.util.List;
 /**
  * 信息流Demo（ListView 模板渲染：支持开发者进行微调）
  *
- * IFoxADXTemInfoFeedAd
- *
+ *  * 请求广告             getAd()
+ *  * 获取竞价价格          getECPM();
+ *  * 设置竞胜价格展示广告   openAd()
+ *  * 广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
+ *  * 销毁广告组件          destroy();
  */
 @SuppressWarnings("ALL")
 public class NativeListFeedListActivity extends Activity {
@@ -58,6 +63,7 @@ public class NativeListFeedListActivity extends Activity {
     private int slotId;
     private int imageWidth = 0;
     private int imageHeight = 0;
+    private int mPrice =500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +211,7 @@ public class NativeListFeedListActivity extends Activity {
         /**
          * 竞胜价格
          */
-        private int price = 100;
+        private int mPrice;
 
         private List<IFoxADXTemInfoFeedAd> mData;
         private Context mContext;
@@ -268,10 +274,9 @@ public class NativeListFeedListActivity extends Activity {
                 normalViewHolder = (AdViewHolder) convertView.getTag();
             }
             IFoxADXTemInfoFeedAd tempAd = getItem(position);
-            FoxADXADBean foxADXADBean = tempAd.getFoxADXADBean();
-            if (foxADXADBean!=null){
-                foxADXADBean.setPrice(price);
-            }
+            mPrice = tempAd.getECPM();
+            //设置竞胜价格
+            tempAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
             if (tempAd!=null){
                 View view = tempAd.getView();
                 if (view!=null){

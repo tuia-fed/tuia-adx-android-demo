@@ -7,7 +7,9 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenAd;
 import com.mediamain.android.adx.view.tabscreen.FoxADXTabScreenHolder;
@@ -16,10 +18,11 @@ import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
 /**
- * 请求广告             getAd()
- * 获取竞价价格          getECPM();
- * 设置竞胜价格展示广告   openAd()
- * 销毁广告组件          destroy();
+ *  请求广告             getAd()
+ *  获取竞价价格          getECPM();
+ *  设置竞胜价格展示广告   openAd()
+ *  广告投放优化设置：广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
+ *  销毁广告组件          destroy();
  */
 public class TabScreenActivity extends AppCompatActivity {
 
@@ -34,7 +37,7 @@ public class TabScreenActivity extends AppCompatActivity {
     /**
      * 竞胜价格设置
      */
-    private int price = 100;
+    private int price;
     private final boolean isCached = true;
 
     @Override
@@ -78,6 +81,7 @@ public class TabScreenActivity extends AppCompatActivity {
                         if (foxADXTabScreenAd!=null){
                             mFoxADXTabScreenAd = foxADXTabScreenAd;
                             mFoxADXADBean = foxADXTabScreenAd.getFoxADXADBean();
+                            price = foxADXTabScreenAd.getECPM();
                             if (!isCached){
                                 //在线播放模式  在此回调之后可用
                                 openAD();
@@ -152,7 +156,7 @@ public class TabScreenActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
             });
-            mFoxADXADBean.setPrice(price);
+            mFoxADXTabScreenAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
             mFoxADXTabScreenAd.openActivity(mFoxADXADBean);
         }
     }

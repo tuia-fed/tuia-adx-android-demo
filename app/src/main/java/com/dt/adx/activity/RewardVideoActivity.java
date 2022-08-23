@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.rewardvideo.FoxADXRewardVideoAd;
 import com.mediamain.android.adx.view.rewardvideo.FoxADXRewardVideoHolder;
@@ -15,10 +17,11 @@ import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
 /**
- * 请求广告             getAd()
- * 获取竞价价格          getECPM();
- * 设置竞胜价格展示广告   openAd()
- * 销毁广告组件          destroy();
+ *  请求广告             getAd()
+ *  获取竞价价格          getECPM();
+ *  设置竞胜价格展示广告   openAd()
+ *  广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
+ *  销毁广告组件          destroy();
  */
 public class RewardVideoActivity extends AppCompatActivity {
 
@@ -33,7 +36,7 @@ public class RewardVideoActivity extends AppCompatActivity {
     /**
      * 竞胜价格设置
      */
-    private int price =100;
+    private int price;
     private final boolean isCached = true;
 
     @Override
@@ -111,8 +114,8 @@ public class RewardVideoActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
             });
-            //设置竞价胜出价格
-            mFoxADXADBean.setPrice(price);
+            //设置竞胜价格
+            mFoxADXRewardVideoAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
             //打开视频广告
             mFoxADXRewardVideoAd.openActivity(mFoxADXADBean);
         }else {
@@ -134,7 +137,7 @@ public class RewardVideoActivity extends AppCompatActivity {
                 mFoxADXRewardVideoAd = foxADXRewardVideoAd;
                 mFoxADXADBean = foxADXRewardVideoAd.getFoxADXADBean();
                 //获取竞价价格
-                foxADXRewardVideoAd.getECPM();
+                price = foxADXRewardVideoAd.getECPM();
                 Log.d(TAG, "onAdGetSuccess: ");
                 FoxBaseToastUtils.showShort("获取广告成功");
                 //在线模式 可能因为网络原因播放卡顿

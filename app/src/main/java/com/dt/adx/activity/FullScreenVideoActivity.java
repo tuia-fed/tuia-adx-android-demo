@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoAd;
 import com.mediamain.android.adx.view.fullscreen.FoxADXFullScreenVideoHolder;
@@ -17,6 +19,7 @@ import com.mediamain.android.view.holder.FoxNativeAdHelper;
  * 请求广告             getAd()
  * 获取竞价价格          getECPM();
  * 设置竞胜价格展示广告   openAd()
+ * 广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
  * 销毁广告组件          destroy();
  */
 public class FullScreenVideoActivity extends AppCompatActivity {
@@ -28,9 +31,9 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     private int slotId;
     private String userId;
     /**
-     * 竞胜价格设置
+     * 竞胜价格 分/每千次
      */
-    private int price = 100;
+    private int mPrice;
     private Activity mActivity;
     private final boolean isCached = true;
     private FoxADXFullScreenVideoAd adxFullScreenVideoAd;
@@ -61,7 +64,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                 if (foxADXFullScreenVideoAd != null) {
                     adxFullScreenVideoAd = foxADXFullScreenVideoAd;
                     mFoxADXADBean = foxADXFullScreenVideoAd.getFoxADXADBean();
-                    foxADXFullScreenVideoAd.getECPM();
+                    mPrice = foxADXFullScreenVideoAd.getECPM();
                     //在线模式 可能因为网络原因播放卡顿
                     if (!isCached){
                         openAd();
@@ -157,8 +160,8 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
             });
-            //设置竞价胜出价格
-            mFoxADXADBean.setPrice(price);
+            //设置竞胜价格
+            adxFullScreenVideoAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
             //打开全屏视频广告
             adxFullScreenVideoAd.openActivity(mFoxADXADBean);
         }else {

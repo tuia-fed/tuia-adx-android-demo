@@ -10,7 +10,9 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.splash.FoxADXShView;
 import com.mediamain.android.adx.view.splash.FoxADXSplashAd;
@@ -20,23 +22,25 @@ import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 
 /**
- * 请求广告             getAd()
- * 获取竞价价格          getECPM();
- * 设置竞胜价格展示广告   openAd()
- * 销毁广告组件          destroy();
+ *  请求广告             getAd()
+ *  获取竞价价格          getECPM();
+ *  设置竞胜价格展示广告   openAd()
+ *  广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
+ *  销毁广告组件          destroy();
  */
 public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName()+"====";
 
     private FoxADXSplashHolderImpl adxSplashHolder;
-    private int slotId =  421090;
+    private int slotId;
     private String userId;
     private FoxADXShView foxADXShView;
+    private FoxADXSplashAd mFoxADXSplashAd;
     /**
      * 竞胜价格设置
      */
-    private int price =100;
+    private int price;
     private FoxADXADBean mFoxADXADBean;
     private final boolean isCached = true;
 
@@ -75,10 +79,11 @@ public class SplashActivity extends AppCompatActivity {
                 FoxBaseToastUtils.showShort("广告获取成功");
                 if (foxADXSplashAd!=null){
                     Log.d(TAG, "onAdGetSuccess: "+ foxADXSplashAd.getECPM());
+                    mFoxADXSplashAd = foxADXSplashAd;
                     foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
                     mFoxADXADBean = foxADXSplashAd.getFoxADXADBean();
                     //获取竞价价格
-                    foxADXSplashAd.getECPM();
+                    price = foxADXSplashAd.getECPM();
                     if (!isCached){
                         openAD();
                     }
@@ -121,7 +126,6 @@ public class SplashActivity extends AppCompatActivity {
                     ViewGroup.LayoutParams.MATCH_PARENT);
             contentView.removeAllViews();
             contentView.addView(foxADXShView, params);
-            mFoxADXADBean.setPrice(price);
             foxADXShView.setAdListener(new FoxADXSplashAd.LoadAdInteractionListener() {
                 @Override
                 public void onAdLoadFailed() {
@@ -176,6 +180,10 @@ public class SplashActivity extends AppCompatActivity {
                     Log.d(TAG, "onError: ");
                 }
             });
+            //设置竞胜价格
+            if (mFoxADXSplashAd!=null){
+                mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
+            }
             foxADXShView.showAd(SplashActivity.this,mFoxADXADBean);
         }
     }

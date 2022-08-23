@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
+import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.icon.FoxADXIconAd;
 import com.mediamain.android.adx.view.icon.FoxADXIconHolder;
@@ -20,6 +22,7 @@ import com.mediamain.android.view.holder.FoxNativeAdHelper;
  * 请求广告             getAd()
  * 获取竞价价格          getECPM();
  * 设置竞胜价格展示广告   openAd()
+ * 广告竞价失败的时候也调用下把胜出价格回传 mBannerAd.setWinPrice("广告平台名称","胜出价格", FoxADXConstant.CURRENCY.RMB);
  * 销毁广告组件          destroy();
  */
 public class IconActivity extends AppCompatActivity {
@@ -31,7 +34,7 @@ public class IconActivity extends AppCompatActivity {
     /**
      * 竞胜价格设置
      */
-    private int price =100;
+    private int mPrice;
     private FoxADXIconHolder adxIconHolder;
     private  FoxADXADBean mFoxADXADBean;
     private FoxADXIconView mFoxADXIconView;
@@ -58,9 +61,8 @@ public class IconActivity extends AppCompatActivity {
     private void openAd() {
         if (mFoxADXADBean!=null && mFoxADXIconAd!=null && mFoxADXIconAd.getView() instanceof FoxADXIconView){
             mFoxADXIconView = (FoxADXIconView) mFoxADXIconAd.getView();
-            if (mFoxADXIconAd.getFoxADXADBean()!=null){
-                mFoxADXIconAd.getFoxADXADBean().setPrice(price);
-            }
+            //设置竞胜价格
+            mFoxADXIconAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
             mFoxADXIconAd.setLoadAdInteractionListener(new FoxADXIconAd.LoadAdInteractionListener() {
 
                 @Override
@@ -113,6 +115,7 @@ public class IconActivity extends AppCompatActivity {
                 FoxBaseToastUtils.showShort("广告获取成功");
                 Log.d(TAG, "onAdGetSuccess: ");
                 mFoxADXIconAd = foxADXIconAd;
+                mPrice = foxADXIconAd.getECPM();
             }
 
             @Override
