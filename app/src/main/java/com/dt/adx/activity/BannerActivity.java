@@ -33,10 +33,9 @@ public class BannerActivity extends AppCompatActivity {
     private String userId;
     private int slotId;
     private FoxADXBannerAd mBannerAd;
-    /**
-     * 竞胜价格 分/每千次
-     */
     private int mPrice;
+    private int width = 738;
+    private int height = 200;
     private  FoxADXBannerHolder adxBannerHolder;
     private FoxADXBannerView mFoxADXBannerView;
 
@@ -59,7 +58,7 @@ public class BannerActivity extends AppCompatActivity {
 
     private void getAd() {
         adxBannerHolder = FoxNativeAdHelper.getADXBannerHolder();
-        adxBannerHolder.loadAd(BannerActivity.this, slotId, new FoxSize(738, 200, "738x200_mb"),new FoxADXBannerHolder.LoadAdListener() {
+        adxBannerHolder.loadAd(BannerActivity.this, slotId, new FoxSize(width, height, width+"x"+height+"_mb"),new FoxADXBannerHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXBannerAd bannerAd) {
                 FoxBaseToastUtils.showShort("广告获取成功");

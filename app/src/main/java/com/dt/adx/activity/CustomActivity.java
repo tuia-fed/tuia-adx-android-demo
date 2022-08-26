@@ -82,8 +82,7 @@ public class CustomActivity extends AppCompatActivity {
     }
 
     private void openAd() {
-        if (mFoxADXCustomAd != null && mBid != null
-                && !TextUtils.isEmpty(mBid.getDurl())) {
+        if (mFoxADXCustomAd != null && mBid != null && !TextUtils.isEmpty(mBid.getDurl())) {
             mFoxADXCustomAd.onAdClick();
             mFoxADXCustomAd.openActivity(mBid.getDurl());
         }
@@ -106,7 +105,10 @@ public class CustomActivity extends AppCompatActivity {
             @Override
             public void onAdGetSuccess(FoxADXCustomAd foxADXCustomAd) {
                 mFoxADXCustomAd =  foxADXCustomAd;
-                mBid = foxADXCustomAd.getBid();
+                if (foxADXCustomAd.getFoxADXADBean()!=null){
+                    mBid = foxADXCustomAd.getFoxADXADBean().getBid();
+                    mBidAdm = foxADXCustomAd.getFoxADXADBean().getBidAdm();
+                }
                 mPrice = foxADXCustomAd.getECPM();
                 foxADXCustomAd.setWinPrice(FoxADXConstant.PlatFrom.FROM_TUIA,mPrice, FoxADXConstant.CURRENCY.RMB);
                 foxADXCustomAd.onAdExposure();

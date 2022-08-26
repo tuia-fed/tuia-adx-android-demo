@@ -37,7 +37,6 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     private Activity mActivity;
     private final boolean isCached = true;
     private FoxADXFullScreenVideoAd adxFullScreenVideoAd;
-    private FoxADXADBean mFoxADXADBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,6 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                 FoxBaseToastUtils.showShort("广告获取成功");
                 if (foxADXFullScreenVideoAd != null) {
                     adxFullScreenVideoAd = foxADXFullScreenVideoAd;
-                    mFoxADXADBean = foxADXFullScreenVideoAd.getFoxADXADBean();
                     mPrice = foxADXFullScreenVideoAd.getECPM();
                     //在线模式 可能因为网络原因播放卡顿
                     if (!isCached){
@@ -76,7 +74,6 @@ public class FullScreenVideoActivity extends AppCompatActivity {
             public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
                 Log.d(TAG, "onAdCacheSuccess: ");
                 FoxBaseToastUtils.showShort("广告缓存成功");
-                mFoxADXADBean = foxADXADBean;
                 //缓存模式 先缓存本地视频 再播放不会卡顿
                 if (isCached){
                     openAd();
@@ -113,7 +110,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
 
     private void openAd() {
         //打开广告
-        if (mFoxADXADBean!=null && adxFullScreenVideoAd!=null) {
+        if (adxFullScreenVideoAd!=null) {
             adxFullScreenVideoAd.setLoadVideoAdInteractionListener(new FoxADXFullScreenVideoAd.LoadVideoAdInteractionListener() {
                 @Override
                 public void onAdLoadFailed() {
@@ -163,7 +160,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
             //设置竞胜价格
             adxFullScreenVideoAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
             //打开全屏视频广告
-            adxFullScreenVideoAd.openActivity(mFoxADXADBean);
+            adxFullScreenVideoAd.openActivity(adxFullScreenVideoAd.getFoxADXADBean());
         }else {
             FoxBaseToastUtils.showShort("等待广告请求成功。。。");
         }

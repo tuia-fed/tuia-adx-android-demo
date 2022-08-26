@@ -14,6 +14,7 @@ import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
+import com.mediamain.android.adx.view.banner.FoxADXBannerView;
 import com.mediamain.android.adx.view.splash.FoxADXShView;
 import com.mediamain.android.adx.view.splash.FoxADXSplashAd;
 import com.mediamain.android.adx.view.splash.FoxADXSplashHolder;
@@ -37,11 +38,7 @@ public class SplashActivity extends AppCompatActivity {
     private String userId;
     private FoxADXShView foxADXShView;
     private FoxADXSplashAd mFoxADXSplashAd;
-    /**
-     * 竞胜价格设置
-     */
     private int price;
-    private FoxADXADBean mFoxADXADBean;
     private final boolean isCached = true;
 
     @Override
@@ -80,8 +77,6 @@ public class SplashActivity extends AppCompatActivity {
                 if (foxADXSplashAd!=null){
                     Log.d(TAG, "onAdGetSuccess: "+ foxADXSplashAd.getECPM());
                     mFoxADXSplashAd = foxADXSplashAd;
-                    foxADXShView = (FoxADXShView) foxADXSplashAd.getView();
-                    mFoxADXADBean = foxADXSplashAd.getFoxADXADBean();
                     //获取竞价价格
                     price = foxADXSplashAd.getECPM();
                     if (!isCached){
@@ -95,7 +90,6 @@ public class SplashActivity extends AppCompatActivity {
                 FoxBaseToastUtils.showShort("广告缓存成功");
                 Log.d(TAG, "onAdCacheSuccess: "+foxADXADBean.getRequestTid());
                 FoxBaseToastUtils.showShort("onAdCacheSuccess ");
-                mFoxADXADBean = foxADXADBean;
                 if (isCached){
                     openAD();
                 }
@@ -119,7 +113,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void openAD() {
-        if (mFoxADXADBean!=null){
+        if (mFoxADXSplashAd!=null &&  mFoxADXSplashAd.getView() instanceof FoxADXShView){
+            foxADXShView = (FoxADXShView) mFoxADXSplashAd.getView();
             ViewGroup contentView = findViewById(android.R.id.content);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -130,6 +125,7 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onAdLoadFailed() {
                     Log.d(TAG, "onAdLoadFailed: ");
+                    jumpMain();
                 }
 
                 @Override
@@ -181,10 +177,8 @@ public class SplashActivity extends AppCompatActivity {
                 }
             });
             //设置竞胜价格
-            if (mFoxADXSplashAd!=null){
-                mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
-            }
-            foxADXShView.showAd(SplashActivity.this,mFoxADXADBean);
+            mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
+            foxADXShView.showAd(SplashActivity.this,mFoxADXSplashAd.getFoxADXADBean());
         }
     }
 

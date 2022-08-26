@@ -18,20 +18,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.dt.adx.widget.ILoadMoreListener;
 import com.dt.adx.widget.LoadMoreListView;
 import com.mediamain.android.FoxSDK;
-import com.mediamain.android.adx.base.FoxADXADBean;
 import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.BidResponse;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedAd;
 import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedHolder;
 import com.mediamain.android.adx.view.feed.interfaces.IFoxADXTemInfoFeedAd;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 

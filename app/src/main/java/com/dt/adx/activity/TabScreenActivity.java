@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.FrameLayout;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
 import com.mediamain.android.FoxSDK;
@@ -29,7 +28,6 @@ public class TabScreenActivity extends AppCompatActivity {
     private static final String TAG = TabScreenActivity.class.getSimpleName();
 
     FoxADXTabScreenHolderImpl tabScreenVideoHolder;
-    private FoxADXADBean mFoxADXADBean;
     private FoxADXTabScreenAd mFoxADXTabScreenAd;
     private int slotId;
     private String userId;
@@ -80,7 +78,6 @@ public class TabScreenActivity extends AppCompatActivity {
                         Log.d(TAG, "onAdGetSuccess: ");
                         if (foxADXTabScreenAd!=null){
                             mFoxADXTabScreenAd = foxADXTabScreenAd;
-                            mFoxADXADBean = foxADXTabScreenAd.getFoxADXADBean();
                             price = foxADXTabScreenAd.getECPM();
                             if (!isCached){
                                 //在线播放模式  在此回调之后可用
@@ -93,7 +90,6 @@ public class TabScreenActivity extends AppCompatActivity {
                     public void onAdCacheSuccess(FoxADXADBean foxADXADBean) {
                         FoxBaseToastUtils.showShort("广告缓存成功");
                         Log.d(TAG, "onAdCacheSuccess: ");
-                        mFoxADXADBean = foxADXADBean;
                         //缓存模式 先缓存本地视频 再播放不会卡顿
                         if (isCached){
                             openAD();
@@ -119,7 +115,7 @@ public class TabScreenActivity extends AppCompatActivity {
     }
 
     private void openAD() {
-        if (mFoxADXADBean!=null && mFoxADXTabScreenAd!=null){
+        if (mFoxADXTabScreenAd!=null){
             mFoxADXTabScreenAd.setLoadAdInteractionListener(new FoxADXTabScreenAd.LoadAdInteractionListener() {
                 @Override
                 public void onAdLoadFailed() {
@@ -157,7 +153,7 @@ public class TabScreenActivity extends AppCompatActivity {
                 }
             });
             mFoxADXTabScreenAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
-            mFoxADXTabScreenAd.openActivity(mFoxADXADBean);
+            mFoxADXTabScreenAd.openActivity(mFoxADXTabScreenAd.getFoxADXADBean());
         }
     }
 
