@@ -166,15 +166,6 @@ public class SplashActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
 
-                @Override
-                public void servingSuccessResponse(BidResponse bidResponse) {
-                    Log.d(TAG, "servingSuccessResponse: ");
-                }
-
-                @Override
-                public void onError(int i, String s) {
-                    Log.d(TAG, "onError: ");
-                }
             });
             //设置竞胜价格
             mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
