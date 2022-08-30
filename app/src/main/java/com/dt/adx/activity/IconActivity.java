@@ -61,6 +61,8 @@ public class IconActivity extends AppCompatActivity {
     private void openAd() {
         if (mFoxADXIconAd!=null && mFoxADXIconAd.getView() instanceof FoxADXIconView){
             mFoxADXIconView = (FoxADXIconView) mFoxADXIconAd.getView();
+            mFoxADXIconView.setAdView(View.GONE);
+            mFoxADXIconView.setCloseView(View.GONE);
             //设置竞胜价格
             mFoxADXIconAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
             mFoxADXIconAd.setLoadAdInteractionListener(new FoxADXIconAd.LoadAdInteractionListener() {

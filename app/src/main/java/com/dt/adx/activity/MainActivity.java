@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnIcon:
                 intent.setClass(this,IconActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",399517);
+                intent.putExtra("slotId",425656);
                 break;
             case R.id.btnNativeRecycler:
                 intent.setClass(this,RecyclerFeedListActivity.class);
