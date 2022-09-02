@@ -10,6 +10,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.mediamain.android.adx.view.feed.FoxADXTemInfoFeedHolder;
 import com.mediamain.android.adx.view.feed.interfaces.IFoxADXTemInfoFeedAd;
 import com.mediamain.android.base.exoplayer2.Player;
 import com.mediamain.android.base.exoplayer2.ui.AspectRatioFrameLayout;
+import com.mediamain.android.view.bean.MessageData;
 import com.mediamain.android.view.holder.FoxNativeAdHelper;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -217,6 +219,42 @@ public class RecyclerFeedListActivity extends Activity {
                     tempAd.setAdBackground(FoxSDK.getContext().getDrawable(R.drawable.recy_shape));
                     //设置竞胜价格
                     tempAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
+                    tempAd.setLoadAdInteractionListener(new IFoxADXTemInfoFeedAd.LoadAdInteractionListener() {
+                        @Override
+                        public void onAdLoadFailed() {
+                            Log.d(TAG, "onAdLoadFailed: ");
+                        }
+
+                        @Override
+                        public void onAdLoadSuccess() {
+                            Log.d(TAG, "onAdLoadSuccess: ");
+                        }
+
+                        @Override
+                        public void onAdClick() {
+                            Log.d(TAG, "onAdClick: ");
+                        }
+
+                        @Override
+                        public void onAdExposure() {
+                            Log.d(TAG, "onAdExposure: ");
+                        }
+
+                        @Override
+                        public void onAdCloseClick() {
+                            Log.d(TAG, "onAdCloseClick: ");
+                        }
+
+                        @Override
+                        public void onAdActivityClose(String s) {
+                            Log.d(TAG, "onAdActivityClose: ");
+                        }
+
+                        @Override
+                        public void onAdMessage(MessageData messageData) {
+
+                        }
+                    });
                     View view = tempAd.getView();
                     if (view!=null){
                         if (tempAd.getView().getParent() instanceof ViewGroup) {

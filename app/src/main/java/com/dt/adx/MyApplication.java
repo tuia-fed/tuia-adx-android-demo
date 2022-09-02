@@ -2,6 +2,9 @@ package com.dt.adx;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+
 import com.mediamain.android.FoxSDK;
 import com.mediamain.android.base.config.AutoConfig;
 import com.mediamain.android.base.config.FoxConfig;
@@ -42,6 +45,7 @@ public class MyApplication extends Application {
                 .build();
         FoxSDK.init(this,config);
     }
+
 
     public Context getContext(){
         return this;
