@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.dt.adx.R;
 import com.dt.adx.utils.FoxBaseToastUtils;
+import com.mediamain.android.FoxSDK;
 import com.mediamain.android.adx.base.FoxADXConstant;
 import com.mediamain.android.adx.response.Bid;
 import com.mediamain.android.adx.response.BidAdm;
@@ -110,7 +111,7 @@ public class CustomActivity extends AppCompatActivity {
                     mBidAdm = foxADXCustomAd.getFoxADXADBean().getBidAdm();
                 }
                 mPrice = foxADXCustomAd.getECPM();
-                foxADXCustomAd.setWinPrice(FoxADXConstant.PlatFrom.FROM_TUIA,mPrice, FoxADXConstant.CURRENCY.RMB);
+                foxADXCustomAd.setWinPrice(FoxSDK.getSDKName(),foxADXCustomAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
                 foxADXCustomAd.onAdExposure();
                 if (textView!=null){
                     textView.setText(mBid.toString());

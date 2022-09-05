@@ -114,9 +114,9 @@ public class RewardVideoActivity extends AppCompatActivity {
                 }
             });
             //设置竞胜价格
-            mFoxADXRewardVideoAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
+            mFoxADXRewardVideoAd.setWinPrice(FoxSDK.getSDKName(),mFoxADXRewardVideoAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
             //打开视频广告
-            mFoxADXRewardVideoAd.openActivity(mFoxADXRewardVideoAd.getFoxADXADBean());
+            mFoxADXRewardVideoAd.openActivity();
         }else {
             FoxBaseToastUtils.showShort("等待广告请求成功。。。");
         }

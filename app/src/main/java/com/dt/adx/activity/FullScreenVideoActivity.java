@@ -158,9 +158,9 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                 }
             });
             //设置竞胜价格
-            adxFullScreenVideoAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
+            adxFullScreenVideoAd.setWinPrice(FoxSDK.getSDKName(),adxFullScreenVideoAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
             //打开全屏视频广告
-            adxFullScreenVideoAd.openActivity(adxFullScreenVideoAd.getFoxADXADBean());
+            adxFullScreenVideoAd.openActivity();
         }else {
             FoxBaseToastUtils.showShort("等待广告请求成功。。。");
         }

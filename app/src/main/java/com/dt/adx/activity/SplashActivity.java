@@ -38,7 +38,6 @@ public class SplashActivity extends AppCompatActivity {
     private String userId;
     private FoxADXShView foxADXShView;
     private FoxADXSplashAd mFoxADXSplashAd;
-    private int price;
     private final boolean isCached = true;
 
     @Override
@@ -78,7 +77,7 @@ public class SplashActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdGetSuccess: "+ foxADXSplashAd.getECPM());
                     mFoxADXSplashAd = foxADXSplashAd;
                     //获取竞价价格
-                    price = foxADXSplashAd.getECPM();
+                    foxADXSplashAd.getECPM();
                     if (!isCached){
                         openAD();
                     }
@@ -115,7 +114,7 @@ public class SplashActivity extends AppCompatActivity {
     private void openAD() {
         if (mFoxADXSplashAd!=null &&  mFoxADXSplashAd.getView() instanceof FoxADXShView){
             foxADXShView = (FoxADXShView) mFoxADXSplashAd.getView();
-            ViewGroup contentView = findViewById(android.R.id.content);
+            ViewGroup contentView = findViewById(R.id.container);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
@@ -158,7 +157,7 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onAdActivityClose(String s) {
                     Log.d(TAG, "onAdActivityClose: ");
-                    jumpMain();
+//                    jumpMain();
                 }
 
                 @Override
@@ -168,8 +167,9 @@ public class SplashActivity extends AppCompatActivity {
 
             });
             //设置竞胜价格
-            mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
-            foxADXShView.showAd(SplashActivity.this,mFoxADXSplashAd.getFoxADXADBean());
+            mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),mFoxADXSplashAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
+//            foxADXShView.showAd(SplashActivity.this,mFoxADXSplashAd.getFoxADXADBean());
+            foxADXShView.showAd(mFoxADXSplashAd.getFoxADXADBean());
         }
     }
 

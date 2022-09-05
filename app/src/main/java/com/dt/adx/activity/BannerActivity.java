@@ -91,7 +91,7 @@ public class BannerActivity extends AppCompatActivity {
     private void openAd() {
         if (mBannerAd!=null &&  mBannerAd.getView() instanceof FoxADXBannerView ){
             mFoxADXBannerView = (FoxADXBannerView) mBannerAd.getView();
-            mBannerAd.setWinPrice(FoxSDK.getSDKName(),mPrice, FoxADXConstant.CURRENCY.RMB);
+            mBannerAd.setWinPrice(FoxSDK.getSDKName(),mBannerAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
             mBannerAd.setLoadAdInteractionListener(new FoxADXBannerAd.LoadAdInteractionListener() {
 
                 @Override

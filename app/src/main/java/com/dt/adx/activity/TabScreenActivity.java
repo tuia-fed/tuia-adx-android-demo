@@ -31,7 +31,6 @@ public class TabScreenActivity extends AppCompatActivity {
     private FoxADXTabScreenAd mFoxADXTabScreenAd;
     private int slotId;
     private String userId;
-    private Activity activity;
     /**
      * 竞胜价格设置
      */
@@ -42,7 +41,6 @@ public class TabScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_screnn);
-        activity = this;
         if (getIntent() != null) {
             userId = getIntent().getStringExtra("userId");
             slotId = getIntent().getIntExtra("slotId", 0);
@@ -152,8 +150,8 @@ public class TabScreenActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
             });
-            mFoxADXTabScreenAd.setWinPrice(FoxSDK.getSDKName(),price, FoxADXConstant.CURRENCY.RMB);
-            mFoxADXTabScreenAd.openActivity(mFoxADXTabScreenAd.getFoxADXADBean());
+            mFoxADXTabScreenAd.setWinPrice(FoxSDK.getSDKName(),mFoxADXTabScreenAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
+            mFoxADXTabScreenAd.openActivity();
         }
     }
 
