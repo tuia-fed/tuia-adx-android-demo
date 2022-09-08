@@ -31,10 +31,6 @@ public class TabScreenActivity extends AppCompatActivity {
     private FoxADXTabScreenAd mFoxADXTabScreenAd;
     private int slotId;
     private String userId;
-    /**
-     * 竞胜价格设置
-     */
-    private int price;
     private final boolean isCached = true;
 
     @Override
@@ -76,7 +72,7 @@ public class TabScreenActivity extends AppCompatActivity {
                         Log.d(TAG, "onAdGetSuccess: ");
                         if (foxADXTabScreenAd!=null){
                             mFoxADXTabScreenAd = foxADXTabScreenAd;
-                            price = foxADXTabScreenAd.getECPM();
+                            foxADXTabScreenAd.getECPM();
                             if (!isCached){
                                 //在线播放模式  在此回调之后可用
                                 openAD();

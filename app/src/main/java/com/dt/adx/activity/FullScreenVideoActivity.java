@@ -30,10 +30,6 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     FoxADXFullScreenVideoHolderImpl nativeIVideoHolder;
     private int slotId;
     private String userId;
-    /**
-     * 竞胜价格 分/每千次
-     */
-    private int mPrice;
     private Activity mActivity;
     private final boolean isCached = true;
     private FoxADXFullScreenVideoAd adxFullScreenVideoAd;
@@ -62,7 +58,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                 FoxBaseToastUtils.showShort("广告获取成功");
                 if (foxADXFullScreenVideoAd != null) {
                     adxFullScreenVideoAd = foxADXFullScreenVideoAd;
-                    mPrice = foxADXFullScreenVideoAd.getECPM();
+                    foxADXFullScreenVideoAd.getECPM();
                     //在线模式 可能因为网络原因播放卡顿
                     if (!isCached){
                         openAd();
