@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnSplash:
                 intent.setClass(this,SplashActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",426069);
+                intent.putExtra("slotId",425951);
                 break;
             case R.id.btnTabScreen:
                 intent.setClass(this,TabScreenActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",421494);
+                intent.putExtra("slotId",428117);
                 break;
             case R.id.btnBanner:
                 intent.setClass(this,BannerActivity.class);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnIcon:
                 intent.setClass(this,IconActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",425656);
+                intent.putExtra("slotId",427173);
                 break;
             case R.id.btnNativeRecycler:
                 intent.setClass(this,RecyclerFeedListActivity.class);

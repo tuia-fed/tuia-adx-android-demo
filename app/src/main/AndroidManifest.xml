@@ -50,6 +50,7 @@
             android:theme="@style/MyFullTheme"
             android:hardwareAccelerated="true"
             android:exported="false" />
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -57,7 +58,9 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
+
         </activity>
     </application>
 
