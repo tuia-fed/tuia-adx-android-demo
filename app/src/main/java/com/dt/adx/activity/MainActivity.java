@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnTabScreen:
                 intent.setClass(this,TabScreenActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",428117);
+                intent.putExtra("slotId",421494);
                 break;
             case R.id.btnBanner:
                 intent.setClass(this,BannerActivity.class);
