@@ -1,20 +1,8 @@
-plugins {
-    id 'com.android.application'
-}
+apply plugin: 'com.android.application'
 
 android {
 
-    signingConfigs {
-        tuia {
-            keyAlias 'kAlias-TUIA-ADX'
-            keyPassword 'adx123456'
-            storeFile file('./test-adx.jks')
-            storePassword 'adx123456'
-        }
-    }
-
     compileSdk 32
-
     defaultConfig {
         applicationId "com.dt.adx"
         minSdk 21
@@ -35,12 +23,27 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs/jni']
+        }
+    }
+
+    signingConfigs {
+        tuia {
+            keyAlias 'kAlias-TUIA-ADX'
+            keyPassword 'adx123456'
+            storeFile file('./test-adx.jks')
+            storePassword 'adx123456'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             zipAlignEnabled true
             debuggable true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-new.pro'
             signingConfig signingConfigs.tuia
         }
     }
@@ -49,11 +52,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs/jni']
-        }
-    }
+
 
     lintOptions{
         checkReleaseBuilds false
@@ -65,7 +64,7 @@ dependencies {
     api rootProject.ext.dependencies["constraintLayout"]
     api rootProject.ext.dependencies["recyclerview-v7"]
     api files('libs/oaid_sdk_1.0.25.aar')
-    api 'com.tuia.android:adx:3.4.0.0'
+    api 'com.tuia.android:adx:3.4.0.6'
     implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'
     implementation  'io.github.scwang90:refresh-header-classics:2.0.5'
     implementation  'io.github.scwang90:refresh-footer-classics:2.0.5'

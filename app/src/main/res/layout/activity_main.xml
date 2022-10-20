@@ -8,6 +8,19 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
+
+    <Button
+        android:id="@+id/btnTest"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="测试"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:onClick="click"
+        tools:ignore="HardcodedText" />
+
     <Button
         android:id="@+id/btnReward"
         android:textColor="@android:color/black"

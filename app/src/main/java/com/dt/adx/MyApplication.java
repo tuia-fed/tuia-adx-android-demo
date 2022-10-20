@@ -25,7 +25,8 @@ public class MyApplication extends Application {
         FoxUserDataController userDataController = FoxUserDataController.getInstance();
         //设备信息获取相关配置  默认获取 获取相关信息在对接文档上有列出  可通过userDataController.setOaid();等方法控制相关数据获取
         //设置获取的oaid  为了兼容oaid版本 允许媒体传入获取的oaid
-        //FoxUserDataController.getInstance().setOaid(oaid);
+        //userDataController.setSetOaid(true);
+        //userDataController.setOaid(oaid);
         userDataController.setUserAgree(true);
         FoxConfig config = new FoxConfig.Builder()
                 //替换成app版本号  必须

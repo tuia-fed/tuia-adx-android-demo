@@ -166,6 +166,12 @@ public class SplashActivity extends AppCompatActivity {
                 }
 
             });
+            //设置默认倒计时时间
+            foxADXShView.setDefaultCountTime(5);
+            //设置点击区域动画是否开启
+            foxADXShView.setOpenJumpAnimator(true);
+            //设置点击区域是否默认全屏 true-全屏可点击  false-点击区域可点击
+            foxADXShView.setDefaultClick(true);
             //设置竞胜价格
             mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),mFoxADXSplashAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
 //            foxADXShView.showAd(SplashActivity.this,mFoxADXSplashAd.getFoxADXADBean());

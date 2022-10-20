@@ -5,14 +5,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import com.dt.adx.R;
+import com.mediamain.android.FoxSDK;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
     public void click(View view){
         Intent intent =new Intent();
         switch (view.getId()){
+            case R.id.btnTest:
+                intent.setClass(this,TestActivity.class);
+                break;
             case R.id.btnReward:
                 intent.setClass(this,RewardVideoActivity.class);
                 intent.putExtra("userId","test-1");
@@ -89,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnSplash:
                 intent.setClass(this,SplashActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",425951);
+                intent.putExtra("slotId",430536);
                 break;
             case R.id.btnTabScreen:
                 intent.setClass(this,TabScreenActivity.class);

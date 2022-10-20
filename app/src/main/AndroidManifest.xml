@@ -20,6 +20,9 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:name=".activity.TestActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.NativeListFeedListActivity"
             android:exported="false" />
         <activity
@@ -37,6 +40,7 @@
         <activity
             android:name=".activity.BannerActivity"
             android:exported="false" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/MyFullTheme"
