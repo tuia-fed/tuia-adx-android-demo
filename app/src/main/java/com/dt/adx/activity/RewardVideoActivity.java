@@ -94,13 +94,16 @@ public class RewardVideoActivity extends AppCompatActivity {
                 @Override
                 public void onAdReward(boolean isReward) {
                     Log.d(TAG, "onAdReward: =="+isReward);
-
+                    if (isReward){
+                        FoxBaseToastUtils.showShort("获得奖励");
+                    } else {
+                        FoxBaseToastUtils.showShort("没有奖励");
+                    }
                 }
 
                 @Override
                 public void onAdCloseClick() {
                     Log.d(TAG, "onAdCloseClick: ");
-
                 }
 
                 @Override

@@ -24,9 +24,10 @@ public class MyApplication extends Application {
         AutoConfig.init(env);
         FoxUserDataController userDataController = FoxUserDataController.getInstance();
         //设备信息获取相关配置  默认获取 获取相关信息在对接文档上有列出  可通过userDataController.setOaid();等方法控制相关数据获取
-        //设置获取的oaid  为了兼容oaid版本 允许媒体传入获取的oaid
-        //userDataController.setSetOaid(true);
-        //userDataController.setOaid(oaid);
+        //SDK目前支持oaid版本是1.0.25版本，如果是新的1.2以上版本建议传入oaid
+        // 设置获取的oaid  为了兼容oaid版本 允许媒体传入获取的oaid
+//        userDataController.setSetOaid(true);
+//        userDataController.setOaid("");
         userDataController.setUserAgree(true);
         FoxConfig config = new FoxConfig.Builder()
                 //替换成app版本号  必须

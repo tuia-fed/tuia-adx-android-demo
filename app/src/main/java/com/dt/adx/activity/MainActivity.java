@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnSplash:
                 intent.setClass(this,SplashActivity.class);
                 intent.putExtra("userId","test-1");
-                intent.putExtra("slotId",430536);
+                intent.putExtra("slotId",421490);
                 break;
             case R.id.btnTabScreen:
                 intent.setClass(this,TabScreenActivity.class);
