@@ -54,7 +54,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
         nativeIVideoHolder.loadAd(slotId, userId, new FoxADXFullScreenVideoHolder.LoadAdListener() {
             @Override
             public void onAdGetSuccess(FoxADXFullScreenVideoAd foxADXFullScreenVideoAd) {
-                Log.d(TAG, "onAdGetSuccess: ");
+                Log.d(TAG, "onAdGetSuccess: "+foxADXFullScreenVideoAd.getECPM());
                 FoxBaseToastUtils.showShort("广告获取成功");
                 if (foxADXFullScreenVideoAd != null) {
                     adxFullScreenVideoAd = foxADXFullScreenVideoAd;
@@ -153,6 +153,8 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                     Log.d(TAG, "onAdMessage: ");
                 }
             });
+            adxFullScreenVideoAd.setDefaultJump(true);
+            adxFullScreenVideoAd.setDefaultJumpClose(true);
             //设置竞胜价格
             adxFullScreenVideoAd.setWinPrice(FoxSDK.getSDKName(),adxFullScreenVideoAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
             //打开全屏视频广告

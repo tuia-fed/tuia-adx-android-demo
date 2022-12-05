@@ -111,8 +111,10 @@ public class CustomActivity extends AppCompatActivity {
                     mBidAdm = foxADXCustomAd.getFoxADXADBean().getBidAdm();
                 }
                 mPrice = foxADXCustomAd.getECPM();
-                foxADXCustomAd.setWinPrice(FoxSDK.getSDKName(),foxADXCustomAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
-                foxADXCustomAd.onAdExposure();
+                if (foxADXCustomAd!=null){
+                    foxADXCustomAd.setWinPrice(FoxSDK.getSDKName(),foxADXCustomAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
+                    foxADXCustomAd.onAdExposure();
+                }
                 if (textView!=null){
                     textView.setText(mBid.toString());
                 }

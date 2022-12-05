@@ -140,7 +140,7 @@ public class RewardVideoActivity extends AppCompatActivity {
                 mFoxADXRewardVideoAd = foxADXRewardVideoAd;
                 //获取竞价价格
                 price = foxADXRewardVideoAd.getECPM();
-                Log.d(TAG, "onAdGetSuccess: ");
+                Log.d(TAG, "onAdGetSuccess: "+price);
                 FoxBaseToastUtils.showShort("获取广告成功");
                 //在线模式 可能因为网络原因播放卡顿
                 if (!isCached){
