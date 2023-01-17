@@ -174,7 +174,6 @@ public class SplashActivity extends AppCompatActivity {
             foxADXShView.setDefaultClick(true);
             //设置竞胜价格
             mFoxADXSplashAd.setWinPrice(FoxSDK.getSDKName(),mFoxADXSplashAd.getECPM(), FoxADXConstant.CURRENCY.RMB);
-//            foxADXShView.showAd(SplashActivity.this,mFoxADXSplashAd.getFoxADXADBean());
             foxADXShView.showAd(mFoxADXSplashAd.getFoxADXADBean());
         }
     }

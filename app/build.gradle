@@ -52,7 +52,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-
     lintOptions{
         checkReleaseBuilds false
         abortOnError false
@@ -63,7 +62,7 @@ dependencies {
     api rootProject.ext.dependencies["constraintLayout"]
     api rootProject.ext.dependencies["recyclerview-v7"]
     api files('libs/oaid_sdk_1.0.25.aar')
-    api 'com.tuia.android:adx:3.5.0.3'
+    api 'com.tuia.android:adx:3.5.1.1'
     implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'
     implementation  'io.github.scwang90:refresh-header-classics:2.0.5'
     implementation  'io.github.scwang90:refresh-footer-classics:2.0.5'
